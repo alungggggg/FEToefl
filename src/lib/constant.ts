@@ -1,0 +1,73 @@
+export const dummyUsersData = [
+    {
+      id: "1122",
+      username: "yosan",
+      name: "yosan okta",
+      password: "yosanokta",
+      exam: "A123",
+    },
+    {
+      id: "1123",
+      username: "john_doe",
+      name: "John Doe",
+      password: "john123",
+      exam: "B124",
+    },
+    {
+      id: "1124",
+      username: "jane_smith",
+      name: "Jane Smith",
+      password: "jane123",
+      exam: "C125",
+    },
+    {
+      id: "1125",
+      username: "bob_jones",
+      name: "Bob Jones",
+      password: "bob123",
+      exam: "D126",
+    },
+    {
+      id: "1126",
+      username: "alice_white",
+      name: "Alice White",
+      password: "alice123",
+      exam: "E127",
+    },
+    {
+      id: "1127",
+      username: "charlie_brown",
+      name: "Charlie Brown",
+      password: "charlie123",
+      exam: "F128",
+    },
+    {
+      id: "1128",
+      username: "lily_green",
+      name: "Lily Green",
+      password: "lily123",
+      exam: "G129",
+    },
+    {
+      id: "1129",
+      username: "mike_blue",
+      name: "Mike Blue",
+      password: "mike123",
+      exam: "H130",
+    },
+    {
+      id: "1130",
+      username: "david_lee",
+      name: "David Lee",
+      password: "david123",
+      exam: "I131",
+    },
+    {
+      id: "1131",
+      username: "emily_black",
+      name: "Emily Black",
+      password: "emily123",
+      exam: "J132",
+    },
+  ];
+  
