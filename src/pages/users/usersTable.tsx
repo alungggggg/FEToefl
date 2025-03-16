@@ -1,17 +1,17 @@
+import NoDataMessage from "@/components/page/noDataMessage";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { UsersInterface } from "@/lib/interface";
-import { PenIcon, SquarePen, Trash } from "lucide-react";
+import { SquarePen, Trash, X } from "lucide-react";
 import React from "react";
 
-const tHeadItems = ["No", "Name", "Username", "exam id", ""];
+const tHeadItems = ["No", "Name", "Username", "exam id", "action"];
 
 const UsersTable = ({
   usersData,
@@ -24,13 +24,13 @@ const UsersTable = ({
 }) => {
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="bg-[#1E56A0] text-white">
         <TableRow>
           {tHeadItems.map((item) => (
             <TableHead
               key={item}
-              className={`${
-                item == "No" ? "w-[40px]" : item == "" ? "w-[80px]" : ""
+              className={`text-white ${
+                item == "No" ? "w-[40px]" : item == "action" ? "w-[80px]" : ""
               }`}
             >
               {item}
@@ -38,26 +38,42 @@ const UsersTable = ({
           ))}
         </TableRow>
       </TableHeader>
-      <TableBody>
-        {usersData.map((item, i) => (
-          <TableRow key={i}>
-            <TableCell>{item.id}</TableCell>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.username}</TableCell>
-            <TableCell>{item.exam}</TableCell>
-            <TableCell className="flex z-10">
-              <SquarePen onClick={() => {
-                setDialogAction("edit")
-                setIsOpen(true)
-              }} />
-              <Trash onClick={() => {
-                setDialogAction("delete")
-                setIsOpen(true)
-              }} />
+      {usersData.length > 0 ? (
+        <TableBody>
+          {usersData.map((item, i) => (
+            <TableRow key={i}>
+              <TableCell>{item.id}</TableCell>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.username}</TableCell>
+              <TableCell>{item.exam}</TableCell>
+              <TableCell className="flex z-10">
+                <SquarePen
+                  onClick={() => {
+                    setDialogAction("edit");
+                    setIsOpen(true);
+                  }}
+                />
+                <Trash
+                  onClick={() => {
+                    setDialogAction("delete");
+                    setIsOpen(true);
+                  }}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      ) : (
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={5}>
+              <section className="flex justify-center items-center my-6">
+                <NoDataMessage/>
+              </section>
             </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableBody>
+      )}
     </Table>
   );
 };

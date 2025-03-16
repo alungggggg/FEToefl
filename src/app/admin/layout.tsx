@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <SidebarProvider>
         <SideBarAdmin />
         <section className="w-full">
-          <div className="h-[64px] flex items-center border-b w-full">
+          <div className="h-[64px] flex items-center border-b border-[#1E56A0]">
             <SidebarTrigger />
           </div>
           <section className="p-3">{children}</section>

@@ -28,7 +28,7 @@ import {
   Newspaper,
   UserRound,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const SideBarAdmin = () => {
   const path = usePathname();
@@ -41,7 +41,7 @@ const SideBarAdmin = () => {
     { title: "Exam", url: "/admin/exam", icon: Newspaper },
   ];
   return (
-    <Sidebar>
+    <Sidebar className="border-r-[0.5px] border-[#163172]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -50,7 +50,7 @@ const SideBarAdmin = () => {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-[#3674B5] text-sidebar-primary-foreground">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-[#1E56A0] text-sidebar-primary-foreground">
                   <BadgeCheck className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -63,11 +63,11 @@ const SideBarAdmin = () => {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="p-0">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title} className={`${currentRoute == item.title.toLowerCase()  ? "bg-blue-50 border-r-6 border-[#3674B5]" : ""}` }>
+                <SidebarMenuItem key={item.title} className={`ps-2 ${currentRoute == item.title.toLowerCase()  ? "bg-blue-50 border-r-8 border-[#1E56A0]" : ""}` }>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
@@ -90,6 +90,13 @@ const SideBarAdmin = () => {
 
 function NavUser() {
   const { isMobile } = useSidebar();
+
+  const router = useRouter();
+
+  async function handleLogout() {
+    // Add your logout logic here
+    router.push("/login");
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -139,7 +146,7 @@ function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500">
+            <DropdownMenuItem className="text-red-500" onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

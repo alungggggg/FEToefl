@@ -56,7 +56,7 @@ const Pagination = ({
   return (
     <section className="flex gap-2 items-center">
       <Button
-        className="bg-[#3674B5]"
+        className="bg-[#1E56A0]"
         onClick={handlePrevButton}
         disabled={currentItem == 1}
       >
@@ -67,7 +67,7 @@ const Pagination = ({
         {currentItem} / {paginationLength}
       </Button>
       <Button
-        className="bg-[#3674B5]"
+        className="bg-[#1E56A0]"
         disabled={currentItem == paginationLength}
         onClick={handleNextButton}
       >

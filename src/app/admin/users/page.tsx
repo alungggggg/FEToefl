@@ -3,6 +3,8 @@
 import Pagination from "@/components/page/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Table } from "@/components/ui/table";
 import { dummyUsersData } from "@/lib/constant";
 import { UsersInterface } from "@/lib/interface";
 import { DialogUsers } from "@/pages/users/dialog/dialogUser";
@@ -40,44 +42,63 @@ const UsersPage = () => {
     setUsersData(dummyUsersData);
   }, []);
 
+  //dummy loading
+  const isLoading = false;
+
   return (
-    <section>
-      <div className="flex justify-between items-center mb-3">
-        <Input
-          className="max-w-[300px]"
-          placeholder="Search"
-          type="search"
-          value={searchParam}
-          onChange={(e) => setSearchParam(e.target.value)}
-        />
-        <Button
-          className="bg-[#3674B5]"
-          onClick={() => {
-            setIsOpen(true);
-            setDialogAction("add");
-          }}
-        >
-          Add Users <PlusIcon />
-        </Button>
-      </div>
-      <UsersTable
-        usersData={showedData}
-        setDialogAction={(e) => setDialogAction(e)}
-        setIsOpen={(e) => setIsOpen(e)}
-      />
-      <div className="flex w-full justify-end mt-6">
-        <Pagination
-          dataLength={filteredData.length}
-          showedDataNumber={10}
-          setShowedDataIndex={setShowedDataIndex}
-        />
-      </div>
-      <DialogUsers
-        isOpen={isOpen}
-        setIsOpen={(e) => setIsOpen(e)}
-        action={dialogAction}
-      />
-    </section>
+    <>
+      {!isLoading ? (
+        <section>
+          <div className="flex justify-between items-center mb-3">
+            <Input
+              className="max-w-[300px]"
+              placeholder="Search"
+              type="search"
+              value={searchParam}
+              onChange={(e) => setSearchParam(e.target.value)}
+            />
+            <Button
+              className="bg-[#1E56A0]"
+              onClick={() => {
+                setIsOpen(true);
+                setDialogAction("add");
+              }}
+            >
+              Add Users <PlusIcon />
+            </Button>
+          </div>
+          <UsersTable
+            usersData={showedData}
+            setDialogAction={(e) => setDialogAction(e)}
+            setIsOpen={(e) => setIsOpen(e)}
+          />
+          <div className="flex w-full justify-end mt-6">
+            <Pagination
+              dataLength={filteredData.length}
+              showedDataNumber={10}
+              setShowedDataIndex={setShowedDataIndex}
+            />
+          </div>
+          <DialogUsers
+            isOpen={isOpen}
+            setIsOpen={(e) => setIsOpen(e)}
+            action={dialogAction}
+          />
+        </section>
+      ) : (
+        <section>
+          <div className="flex justify-between items-center mb-3">
+            <Skeleton className="h-8 w-[300px]" />
+            <Skeleton className="h-8 w-[150px]" />
+          </div>
+          <div className="grid grid-cols-12 gap-y-3">
+            <Skeleton className="col-span-12 h-8" />
+            <Skeleton className="col-span-12 h-8" />
+            <Skeleton className="col-span-12 h-8" />
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 
