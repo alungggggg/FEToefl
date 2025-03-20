@@ -1,5 +1,5 @@
 import { toeflApi } from "@/lib/axios/axios";
-import { UsersInterface } from "@/lib/interface";
+import { UsersInterface, UsersProps } from "@/lib/interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
@@ -23,12 +23,8 @@ export const getUsers = createAsyncThunk(
 
 export const addUsers = createAsyncThunk(
   "users/addUsers",
-  async (
-    data: { username: string; name: string; password: string; exam: string },
-    { rejectWithValue }
-  ) => {
+  async (data: UsersProps, { rejectWithValue }) => {
     try {
-      console.log(data)
       const response = await toeflApi.post("/users", data);
       if (response.status === 200) {
         return response.data.data;
@@ -38,6 +34,53 @@ export const addUsers = createAsyncThunk(
     } catch (error) {
       if (error instanceof AxiosError) {
         throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const deleteUsers = createAsyncThunk(
+  "users/deleteUsers",
+  async ({ data }: { data: UsersInterface }, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.delete(`/users?id=${data?.id}`);
+      if (response?.data) {
+        return data?.id;
+      }
+
+      throw new Error("Failed to delete users");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error?.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const editUsers = createAsyncThunk(
+  "users/editUsers",
+  async (
+    {
+      data,
+    }: { data: { username: string; name: string; exam: string; id: number } },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await toeflApi.patch(`/users?id=${data?.id}`, {
+        name: data.name,
+        username: data.username,
+        exam: data.exam,
+      });
+      if (response?.data) {
+        return response?.data;
+      }
+
+      throw new Error("Failed to edit users");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error?.response?.data);
       }
       throw rejectWithValue("An unexpected error occurred");
     }
@@ -91,6 +134,36 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.data = state.data;
         state.error = action.payload as string;
+      })
+      .addCase(deleteUsers.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = "";
+      })
+      .addCase(deleteUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = state.data.filter((e) => e.id != action.payload);
+        state.error = "";
+      })
+      .addCase(deleteUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.data = state.data;
+        state.error = action.payload as string;
+      })
+      .addCase(editUsers.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = "";
+      })
+      .addCase(editUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = "";
+        const filterData = state.data.filter(
+          (e) => e.id != action.payload.data.id
+        );
+        state.data = [...filterData, action.payload.data];
+      })
+      .addCase(editUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action?.payload as string;
       });
   },
 });

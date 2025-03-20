@@ -10,15 +10,18 @@ import {
 import AddUser from "./addUser";
 import EditUsers from "./editUsers";
 import DeleteUser from "./deleteUser";
+import { UsersInterface } from "@/lib/interface";
 
 export function DialogUsers({
   isOpen,
   setIsOpen,
   action,
+  selectedUser
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   action: string;
+  selectedUser: UsersInterface;
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
@@ -56,9 +59,9 @@ export function DialogUsers({
         {action == "add" ? (
           <AddUser setIsOpen={(e)=>setIsOpen(e)} />
         ) : action == "edit" ? (
-          <EditUsers />
+          <EditUsers editableUsers={selectedUser} setIsOpen={setIsOpen}/>
         ) : action == "delete" ? (
-          <DeleteUser/>
+          <DeleteUser setIsOpen={setIsOpen} deletedUser={selectedUser}/>
         ) : (
           <div>Error Operation</div>
         )}

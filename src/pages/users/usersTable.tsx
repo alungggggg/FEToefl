@@ -17,10 +17,12 @@ const UsersTable = ({
   usersData,
   setDialogAction,
   setIsOpen,
+  setSelectedUsers
 }: {
   usersData: Array<UsersInterface>;
   setDialogAction: React.Dispatch<React.SetStateAction<string>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedUsers : React.Dispatch<UsersInterface>
 }) => {
   return (
     <Table>
@@ -51,6 +53,7 @@ const UsersTable = ({
                   onClick={() => {
                     setDialogAction("edit");
                     setIsOpen(true);
+                    setSelectedUsers(item)
                   }}
                   className="cursor-pointer"
                 />
@@ -58,6 +61,7 @@ const UsersTable = ({
                   onClick={() => {
                     setDialogAction("delete");
                     setIsOpen(true);
+                    setSelectedUsers(item)
                   }}
                   className="cursor-pointer"
                 />

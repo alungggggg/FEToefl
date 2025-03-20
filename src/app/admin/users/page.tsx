@@ -4,6 +4,7 @@ import Pagination from "@/components/page/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UsersInterface } from "@/lib/interface";
 import { getUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { DialogUsers } from "@/pages/users/dialog/dialogUser";
@@ -26,6 +27,7 @@ const UsersPage = () => {
   //dialog
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dialogAction, setDialogAction] = useState<string>("");
+  const [selectedUser, setSelectedUsers] = useState<UsersInterface>();
   //dialog
 
   //filter data
@@ -75,6 +77,7 @@ const UsersPage = () => {
             usersData={showedData}
             setDialogAction={(e) => setDialogAction(e)}
             setIsOpen={(e) => setIsOpen(e)}
+            setSelectedUsers={(e : UsersInterface) => setSelectedUsers(e)}
           />
           <div className="flex w-full justify-end mt-6">
             <Pagination
@@ -98,6 +101,7 @@ const UsersPage = () => {
         </section>
       )}
       <DialogUsers
+        selectedUser={selectedUser || {} as UsersInterface}
         isOpen={isOpen}
         setIsOpen={(e) => setIsOpen(e)}
         action={dialogAction}
