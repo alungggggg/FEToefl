@@ -1,7 +1,13 @@
-// "use client";
+"use client";
+
+import QuestionTable from "@/pages/question/questionTable";
 
 const QuestionPage = () => {
-  return <section>QuestionPage</section>;
+  return (
+    <section>
+      <QuestionTable />
+    </section>
+  );
 };
 
 export default QuestionPage;

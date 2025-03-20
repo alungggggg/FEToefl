@@ -29,10 +29,13 @@ import {
   UserRound,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { signOut } from "@/lib/redux/slice/authSlice";
 
 const SideBarAdmin = () => {
   const path = usePathname();
-  const currentRoute = path?.split("/")[2] || "dashboard"
+  const currentRoute = path?.split("/")[2] || "dashboard";
 
   const items = [
     { title: "Dashboard", url: "/admin/", icon: HomeIcon },
@@ -67,7 +70,14 @@ const SideBarAdmin = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title} className={`ps-2 ${currentRoute == item.title.toLowerCase()  ? "bg-blue-50 border-r-8 border-[#1E56A0]" : ""}` }>
+                <SidebarMenuItem
+                  key={item.title}
+                  className={`ps-2 ${
+                    currentRoute == item.title.toLowerCase()
+                      ? "bg-blue-50 border-r-8 border-[#1E56A0]"
+                      : ""
+                  }`}
+                >
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
@@ -91,11 +101,18 @@ const SideBarAdmin = () => {
 function NavUser() {
   const { isMobile } = useSidebar();
 
+  // redux variable
+  const dispatch = useDispatch<AppDispatch>();
+  // redux variable
+
   const router = useRouter();
 
   async function handleLogout() {
     // Add your logout logic here
-    router.push("/login");
+    const res = await dispatch(signOut());
+    if (res.type === "auth/signOut/fulfilled") {
+      router.push("/login");
+    }
   }
   return (
     <SidebarMenu>

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -55,7 +54,7 @@ export function DialogUsers({
           )}
         </DialogHeader>
         {action == "add" ? (
-          <AddUser />
+          <AddUser setIsOpen={(e)=>setIsOpen(e)} />
         ) : action == "edit" ? (
           <EditUsers />
         ) : action == "delete" ? (

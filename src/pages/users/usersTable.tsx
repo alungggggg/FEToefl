@@ -52,12 +52,14 @@ const UsersTable = ({
                     setDialogAction("edit");
                     setIsOpen(true);
                   }}
+                  className="cursor-pointer"
                 />
                 <Trash
                   onClick={() => {
                     setDialogAction("delete");
                     setIsOpen(true);
                   }}
+                  className="cursor-pointer"
                 />
               </TableCell>
             </TableRow>
@@ -68,7 +70,7 @@ const UsersTable = ({
           <TableRow>
             <TableCell colSpan={5}>
               <section className="flex justify-center items-center my-6">
-                <NoDataMessage/>
+                <NoDataMessage />
               </section>
             </TableCell>
           </TableRow>

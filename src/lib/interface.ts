@@ -5,3 +5,8 @@ export type UsersInterface = {
     password: string
     exam : string
 }
+
+export type AuthInterface = {
+    token: string | null
+    name: string | null
+}

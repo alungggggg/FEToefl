@@ -4,16 +4,20 @@ import Pagination from "@/components/page/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table } from "@/components/ui/table";
-import { dummyUsersData } from "@/lib/constant";
-import { UsersInterface } from "@/lib/interface";
+import { getUsers } from "@/lib/redux/slice/usersSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { DialogUsers } from "@/pages/users/dialog/dialogUser";
 import UsersTable from "@/pages/users/usersTable";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const UsersPage = () => {
-  const [usersData, setUsersData] = useState<UsersInterface[]>([]);
+  const { data: usersData, isLoading } = useSelector(
+    (state: RootState) => state.users
+  );
+  const dispatch = useDispatch<AppDispatch>();
+
   const [showedDataIndex, setShowedDataIndex] = useState<{
     start: number;
     end: number;
@@ -39,11 +43,11 @@ const UsersPage = () => {
   //filter data
 
   useEffect(() => {
-    setUsersData(dummyUsersData);
+    async function getData() {
+      const res = await dispatch(getUsers());
+    }
+    getData();
   }, []);
-
-  //dummy loading
-  const isLoading = false;
 
   return (
     <>
@@ -79,11 +83,6 @@ const UsersPage = () => {
               setShowedDataIndex={setShowedDataIndex}
             />
           </div>
-          <DialogUsers
-            isOpen={isOpen}
-            setIsOpen={(e) => setIsOpen(e)}
-            action={dialogAction}
-          />
         </section>
       ) : (
         <section>
@@ -98,6 +97,11 @@ const UsersPage = () => {
           </div>
         </section>
       )}
+      <DialogUsers
+        isOpen={isOpen}
+        setIsOpen={(e) => setIsOpen(e)}
+        action={dialogAction}
+      />
     </>
   );
 };
