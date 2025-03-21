@@ -2,10 +2,8 @@
 
 import { Card } from "@/components/ui/card";
 import { CrownIcon, Library, School, UsersRound } from "lucide-react";
-import { useState } from "react";
 
 const PageAdmin = () => {
-  const [state] = useState();
   return (
     <div>
       <section className=" grid grid-cols-4 gap-4">

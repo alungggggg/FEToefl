@@ -15,7 +15,7 @@ export const signIn = createAsyncThunk(
       const response = await toeflApi.post("/auth/sign-in", data);
 
       if (response.status === 200) {
-        const res = await fetch("/api/auth", {
+        await fetch("/api/auth", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: response.data.data.token }),
@@ -39,7 +39,7 @@ export const signOut = createAsyncThunk("auth/signOut", async () => {
     const response = await toeflApi.get("/auth/sign-out");
 
     if (response.status === 200) {
-      const res = await fetch("/api/auth", {
+      await fetch("/api/auth", {
         method: "DELETE",
       });
 

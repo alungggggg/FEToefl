@@ -120,7 +120,7 @@ const usersSlice = createSlice({
         state.error = action.payload as string;
         state.data = [];
       })
-      .addCase(addUsers.pending, (state, action) => {
+      .addCase(addUsers.pending, (state) => {
         state.isLoading = true;
         // state.data = [];
         state.error = null;
@@ -135,7 +135,7 @@ const usersSlice = createSlice({
         state.data = state.data;
         state.error = action.payload as string;
       })
-      .addCase(deleteUsers.pending, (state, action) => {
+      .addCase(deleteUsers.pending, (state) => {
         state.isLoading = true;
         state.error = "";
       })
@@ -149,7 +149,7 @@ const usersSlice = createSlice({
         state.data = state.data;
         state.error = action.payload as string;
       })
-      .addCase(editUsers.pending, (state, action) => {
+      .addCase(editUsers.pending, (state) => {
         state.isLoading = true;
         state.error = "";
       })

@@ -3,7 +3,7 @@
 import Pagination from "@/components/page/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ExamTable from "@/pages/exam/examTable";
+import ExamTable from "@/app/admin/exam/_components/examTable";
 import { PlusIcon } from "lucide-react";
 
 const ExamPage = () => {

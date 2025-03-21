@@ -17,13 +17,14 @@ const Pagination = ({
   const [paginationLength, setPaginationLength] = useState(0);
 
   useEffect(() => {
-    var countPaginationLength;
+    let countPaginationLength;
     if (dataLength % showedDataNumber == 0) {
-        countPaginationLength = dataLength / showedDataNumber;
+      countPaginationLength = dataLength / showedDataNumber;
     } else {
       countPaginationLength = Math.floor(dataLength / showedDataNumber) + 1;
     }
     setPaginationLength(countPaginationLength);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataLength]);
 
   function handlePrevButton() {
@@ -51,6 +52,7 @@ const Pagination = ({
   }
   useEffect(() => {
     handleSetShowedItem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentItem]);
 
   return (

@@ -75,7 +75,7 @@ const LoginForm = () => {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleSignIn)}
+            onSubmit={form.handleSubmit((e)=>handleSignIn(e))}
             className="space-y-4"
           >
             <FormField

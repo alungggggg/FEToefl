@@ -2,40 +2,48 @@
 
 import SideBarAdmin from "@/components/page/sidebarAdmin";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-// import { RootState } from "@/lib/redux/store";
 import React, { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
 import NextTopLoader from "nextjs-toploader";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/lib/fetchingCookie";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  // const { isLoading } = useSelector((state: RootState) => state.auth);
-  const [checkLoading, setCheckLoading] = useState<boolean>();
-  const [isLogin, setIsLogin] = useState<string | null>();
+  const [isChecking, setIsChecking] = useState<boolean>(true); // ✅ Tambahkan state untuk validasi login
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
-  //auth check token
   useEffect(() => {
-    setIsLogin(localStorage.getItem("is_login"));
     async function checkToken() {
-      setCheckLoading(false);
       const token = await getCookie();
       if (token) {
         localStorage.setItem("is_login", "true");
-        setIsLogin("true");
+        setIsLogin(true);
       } else {
-        router.push("/login");
+        router.replace("/login");
       }
-      setCheckLoading(true);
+      setIsChecking(false); // ✅ Tandai bahwa validasi selesai
     }
+
     checkToken();
-  }, []);
-  //auth check token
+  }, [router]);
+
+  // ✅ Tampilkan layar loading sebelum validasi selesai
+  if (isChecking) {
+    return (
+      <section className="w-screen h-screen flex items-center justify-center bg-white">
+        <div className="text-lg font-semibold text-gray-700">Memeriksa autentikasi...</div>
+      </section>
+    );
+  }
+
+  // ✅ Jika validasi selesai dan user tidak login, tampilkan layar kosong
+  if (!isLogin) {
+    return <div className="w-screen h-screen flex items-center justify-center bg-white"></div>;
+  }
 
   return (
     <section>
-      <NextTopLoader />
+      <NextTopLoader showSpinner={false}/>
       <SidebarProvider>
         <SideBarAdmin />
         <section className="w-full">
@@ -45,11 +53,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <section className="p-3">{children}</section>
         </section>
       </SidebarProvider>
-      {!(isLogin === "true") && checkLoading ? (
-        <section className="w-screen h-screen bg-white/10 backdrop-blur-sm z-50 absolute top-0"></section>
-      ) : (
-        ""
-      )}
     </section>
   );
 };

@@ -7,8 +7,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UsersInterface } from "@/lib/interface";
 import { getUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { DialogUsers } from "@/pages/users/dialog/dialogUser";
-import UsersTable from "@/pages/users/usersTable";
+import DialogUsers from "@/app/admin/users/_components/dialog/dialogUser";
+import UsersTable from "@/app/admin/users/_components/usersTable";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,11 +44,13 @@ const UsersPage = () => {
   );
   //filter data
 
+  async function getData() {
+    await dispatch(getUsers());
+  }
+
   useEffect(() => {
-    async function getData() {
-      const res = await dispatch(getUsers());
-    }
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -77,7 +79,7 @@ const UsersPage = () => {
             usersData={showedData}
             setDialogAction={(e) => setDialogAction(e)}
             setIsOpen={(e) => setIsOpen(e)}
-            setSelectedUsers={(e : UsersInterface) => setSelectedUsers(e)}
+            setSelectedUsers={(e: UsersInterface) => setSelectedUsers(e)}
           />
           <div className="flex w-full justify-end mt-6">
             <Pagination
@@ -101,7 +103,7 @@ const UsersPage = () => {
         </section>
       )}
       <DialogUsers
-        selectedUser={selectedUser || {} as UsersInterface}
+        selectedUser={selectedUser || ({} as UsersInterface)}
         isOpen={isOpen}
         setIsOpen={(e) => setIsOpen(e)}
         action={dialogAction}

@@ -1,6 +1,6 @@
 "use client";
 
-import QuestionTable from "@/pages/question/questionTable";
+import QuestionTable from "@/app/admin/question/_components/questionTable";
 
 const QuestionPage = () => {
   return (

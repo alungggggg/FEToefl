@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -60,7 +62,10 @@ const EditUsers = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleEditUsers)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit((e) => handleEditUsers(e))}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="id"

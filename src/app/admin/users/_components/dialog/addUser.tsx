@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -9,7 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UsersInterface } from "@/lib/interface";
 import { addUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { usersScema } from "@/lib/schema";
@@ -53,7 +54,7 @@ const AddUser = ({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleAddUsers)} className="space-y-4">
+      <form onSubmit={form.handleSubmit((e)=>handleAddUsers(e))} className="space-y-4">
         <FormField
           control={form.control}
           name="username"

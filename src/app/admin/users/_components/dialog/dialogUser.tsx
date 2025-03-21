@@ -1,22 +1,22 @@
+"use client"
+
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import AddUser from "./addUser";
 import EditUsers from "./editUsers";
 import DeleteUser from "./deleteUser";
 import { UsersInterface } from "@/lib/interface";
 
-export function DialogUsers({
+export default function DialogUsers({
   isOpen,
   setIsOpen,
   action,
-  selectedUser
+  selectedUser,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,11 +57,11 @@ export function DialogUsers({
           )}
         </DialogHeader>
         {action == "add" ? (
-          <AddUser setIsOpen={(e)=>setIsOpen(e)} />
+          <AddUser setIsOpen={(e) => setIsOpen(e)} />
         ) : action == "edit" ? (
-          <EditUsers editableUsers={selectedUser} setIsOpen={setIsOpen}/>
+          <EditUsers editableUsers={selectedUser} setIsOpen={setIsOpen} />
         ) : action == "delete" ? (
-          <DeleteUser setIsOpen={setIsOpen} deletedUser={selectedUser}/>
+          <DeleteUser setIsOpen={setIsOpen} deletedUser={selectedUser} />
         ) : (
           <div>Error Operation</div>
         )}

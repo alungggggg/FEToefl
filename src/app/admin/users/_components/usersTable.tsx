@@ -1,3 +1,5 @@
+'use client'
+
 import NoDataMessage from "@/components/page/noDataMessage";
 import {
   Table,
@@ -8,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UsersInterface } from "@/lib/interface";
-import { SquarePen, Trash, X } from "lucide-react";
+import { SquarePen, Trash} from "lucide-react";
 import React from "react";
 
 const tHeadItems = ["No", "Name", "Username", "exam id", "action"];
@@ -40,7 +42,7 @@ const UsersTable = ({
           ))}
         </TableRow>
       </TableHeader>
-      {usersData.length > 0 ? (
+      {usersData?.length > 0 ? (
         <TableBody>
           {usersData.map((item, i) => (
             <TableRow key={i}>

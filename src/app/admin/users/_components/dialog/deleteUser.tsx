@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { UsersInterface } from "@/lib/interface";
 import { deleteUsers } from "@/lib/redux/slice/usersSlice";
@@ -33,7 +35,7 @@ const DeleteUser = ({
     <section className="w-full flex justify-center space-x-2 mt-4">
       <Button
         className="w-full bg-red-500"
-        onClick={handleDelete}
+        onClick={()=>handleDelete()}
         disabled={isLoading}
       >
         Delete
