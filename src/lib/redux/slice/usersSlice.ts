@@ -15,8 +15,9 @@ export const getUsers = createAsyncThunk(
       throw new Error("Failed to fetch users");
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw rejectWithValue(error.response?.data?.message || error.message);
+        throw rejectWithValue(error.response?.data);
       }
+      throw rejectWithValue("An unexpected error occurred");
     }
   }
 );
@@ -45,8 +46,8 @@ export const deleteUsers = createAsyncThunk(
   async ({ data }: { data: UsersInterface }, { rejectWithValue }) => {
     try {
       const response = await toeflApi.delete(`/users?id=${data?.id}`);
-      if (response?.data) {
-        return data?.id;
+      if (response?.status == 200) {
+        return data;
       }
 
       throw new Error("Failed to delete users");
@@ -141,7 +142,8 @@ const usersSlice = createSlice({
       })
       .addCase(deleteUsers.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = state.data.filter((e) => e.id != action.payload);
+        state.data =
+          state.data?.filter((e) => e.id !== action.payload.id) || [];
         state.error = "";
       })
       .addCase(deleteUsers.rejected, (state, action) => {

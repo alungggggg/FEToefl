@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { addUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { usersScema } from "@/lib/schema";
@@ -42,8 +43,10 @@ const AddUser = ({
   async function handleAddUsers(values: z.infer<typeof usersScema>) {
     try {
       const res = await dispatch(addUsers(values));
-      if (res?.payload?.error?.username[0]) {
-        toast.error(res?.payload?.error?.username[0]);
+      if (res?.payload?.error?.toLowerCase() == "unauthorized") {
+        dispatch(showDialog());
+      } else if (res?.payload?.errors?.username[0]) {
+        toast.error(res?.payload?.errors?.username[0]);
       } else {
         toast.success("Successfully add users");
       }
@@ -54,7 +57,10 @@ const AddUser = ({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit((e)=>handleAddUsers(e))} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit((e) => handleAddUsers(e))}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="username"

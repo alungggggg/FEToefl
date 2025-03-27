@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Pagination from "@/components/page/pagination";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,8 @@ const ExamPage = () => {
           //     setDialogAction("add");
           //   }}
         >
-          Add Exam <PlusIcon />
+          <PlusIcon />
+          Add Exam
         </Button>
       </div>
       <ExamTable />

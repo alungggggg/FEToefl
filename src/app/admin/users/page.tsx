@@ -12,6 +12,7 @@ import UsersTable from "@/app/admin/users/_components/usersTable";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 
 const UsersPage = () => {
   const { data: usersData, isLoading } = useSelector(
@@ -45,7 +46,10 @@ const UsersPage = () => {
   //filter data
 
   async function getData() {
-    await dispatch(getUsers());
+    const res = await dispatch(getUsers());
+    if (res?.payload?.error?.toLowerCase() == "unauthorized") {
+      dispatch(showDialog());
+    }
   }
 
   useEffect(() => {
@@ -72,7 +76,8 @@ const UsersPage = () => {
                 setDialogAction("add");
               }}
             >
-              Add Users <PlusIcon />
+              <PlusIcon />
+              Add Users
             </Button>
           </div>
           <UsersTable

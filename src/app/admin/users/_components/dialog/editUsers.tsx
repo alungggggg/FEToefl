@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UsersInterface } from "@/lib/interface";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { editUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { usersScema } from "@/lib/schema";
@@ -49,7 +50,9 @@ const EditUsers = ({
   async function handleEditUsers(value: z.infer<typeof extendedUsersSchema>) {
     try {
       const res = await dispatch(editUsers({ data: value }));
-      if (res?.payload?.status == true) {
+      if (res?.payload?.error?.toLowerCase() == "unauthorized") {
+        dispatch(showDialog());
+      } else if (res?.payload?.status == true) {
         toast.success("Successfully edit user");
       } else {
         toast.error("Failed to edit user");

@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { UsersInterface } from "@/lib/interface";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { deleteUsers } from "@/lib/redux/slice/usersSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import React from "react";
@@ -22,7 +23,15 @@ const DeleteUser = ({
     try {
       if (deletedUser) {
         const res = await dispatch(deleteUsers({ data: deletedUser }));
-        if (res.payload) {
+        if (
+          res?.payload &&
+          typeof res.payload === "object" &&
+          "error" in res.payload
+        ) {
+          if ((res.payload.error as string).toLowerCase() == "unauthorized") {
+            dispatch(showDialog());
+          }
+        } else if (res.payload) {
           toast.success("Successfully delete users");
         }
       }
@@ -35,7 +44,7 @@ const DeleteUser = ({
     <section className="w-full flex justify-center space-x-2 mt-4">
       <Button
         className="w-full bg-red-500"
-        onClick={()=>handleDelete()}
+        onClick={() => handleDelete()}
         disabled={isLoading}
       >
         Delete
