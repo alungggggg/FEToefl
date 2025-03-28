@@ -6,7 +6,7 @@ import Link from "next/link";
 const questionType = [
   {
     name: "Listening",
-    link: "./",
+    link: "question/listening",
     icon: Volume2,
     count: 200,
   },
