@@ -6,11 +6,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SquarePen, Trash } from "lucide-react";
+import { QuestionInterface } from "@/lib/interface";
+import { EyeIcon, SquarePen, Trash } from "lucide-react";
+import Link from "next/link";
 
 const tHeadItems = ["No", "Question", "Type", "Answer", "Action"];
 
-const ReadingTable = () => {
+const ReadingTable = ({
+  questionData,
+  setIsOpen,
+  setDialogAction,
+  setSelectedQuestion,
+}: {
+  questionData: QuestionInterface[];
+  setIsOpen: (isOpen: boolean) => void;
+  setDialogAction: (action: string) => void;
+  setSelectedQuestion: (question: QuestionInterface) => void;
+}) => {
   return (
     <Table>
       <TableHeader className="bg-[#1E56A0] text-white">
@@ -32,16 +44,31 @@ const ReadingTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>1</TableCell>
-          <TableCell>Apa nama hewan berkaki 4 ?</TableCell>
-          <TableCell>Reading</TableCell>
-          <TableCell>Gajah</TableCell>
-          <TableCell className="flex z-10">
-            <SquarePen />
-            <Trash />
-          </TableCell>
-        </TableRow>
+        {questionData.map((item, index) => (
+          <TableRow key={item.uuid}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell className="truncate max-w-xs">{item.question}</TableCell>
+            <TableCell>{item.type}</TableCell>
+            <TableCell>{item.answer}</TableCell>
+            <TableCell className="flex z-10 gap-x-1">
+              <EyeIcon
+                onClick={() => {
+                  setIsOpen(true);
+                  setDialogAction("view");
+                  setSelectedQuestion(item);
+                }}
+              />
+              <Link href={"./reading/" + item.uuid}>
+                <SquarePen />
+              </Link>
+              <Trash onClick={() => {
+                  setIsOpen(true);
+                  setDialogAction("delete");
+                  setSelectedQuestion(item);
+                }}/>
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

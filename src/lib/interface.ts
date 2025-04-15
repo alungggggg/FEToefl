@@ -21,12 +21,13 @@ export type AuthInterface = {
 export type QuestionOption = {
   uuid: string;
   id_question: string;
-  option: string;
+  options: string;
 };
 
 export type QuestionInterface = {
   uuid: string;
   type: string;
   answer: string;
-  option: QuestionInterface[];
+  question: string;
+  options: QuestionOption[];
 };

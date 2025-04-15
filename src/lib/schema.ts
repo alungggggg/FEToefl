@@ -42,3 +42,25 @@ export const usersScema = z.object({
     message: "Exam is required",
   }),
 });
+
+export const QuestionSchema = z.object({
+  type: z.string().nonempty({
+    message: "Type is required",
+  }),
+  question: z.string().nonempty({
+    message: "Question is required",
+  }),
+  answer: z.string().nonempty({
+    message: "Answer is required",
+  }),
+  options: z.array(
+    z.object({
+      options: z.string().nonempty({
+        message: "Options is required",
+      }),
+    })
+  ).nonempty({
+    message: "Options is required",
+  }),
+});
+
