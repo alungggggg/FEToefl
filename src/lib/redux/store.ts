@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./slice/authSlice";
 import usersSlice from "./slice/usersSlice";
 import unautorizeDialogSlice from "./slice/unautorizeDialogSlice";
-import readingQuestionSlice from "./slice/readingQuestionSlice";
+import readingQuestionSlice from "./slice/questionSlice";
 
 const store = configureStore({
   reducer: {

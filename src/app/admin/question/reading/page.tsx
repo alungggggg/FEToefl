@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ReadingTable from "./_components/readingTable";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { getReadingQuestion } from "@/lib/redux/slice/readingQuestionSlice";
+import { getQuestion } from "@/lib/redux/slice/questionSlice";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QuestionInterface } from "@/lib/interface";
 import ReadingDialog from "./_components/readingDialog";
@@ -27,8 +27,8 @@ const ReadingPage = () => {
   // redux action
 
   async function handleGetReadingQuestion() {
-    const res = await dispatch(getReadingQuestion());
-    if (!getReadingQuestion.fulfilled.match(res)) {
+    const res = await dispatch(getQuestion("reading"));
+    if (!getQuestion.fulfilled.match(res)) {
       console.log("success", res.payload);
     }
   }

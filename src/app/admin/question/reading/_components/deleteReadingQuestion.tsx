@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { QuestionInterface } from "@/lib/interface";
-import { deleteReadingQuestion } from "@/lib/redux/slice/readingQuestionSlice";
+import { deleteQuestion } from "@/lib/redux/slice/questionSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -18,12 +18,12 @@ const DeleteReadingQuestion = ({
     (state: RootState) => state.readingQuestion
   );
 
-  async function handleDeleteReadingQuestion() {
+  async function handledeleteQuestion() {
     if (selectedQuestion) {
       const res = await dispatch(
-        deleteReadingQuestion(selectedQuestion.uuid || "")
+        deleteQuestion(selectedQuestion.uuid || "")
       );
-      if (deleteReadingQuestion.fulfilled.match(res)) {
+      if (deleteQuestion.fulfilled.match(res)) {
         toast.success("Successfully delete reading question");
       } else {
         toast.error("Failed to delete reading question");
@@ -40,7 +40,7 @@ const DeleteReadingQuestion = ({
           form="submitReadingQuestion"
           className="bg-red-500 hover:bg-red-600 text-white"
           disabled={isLoading}
-          onClick={handleDeleteReadingQuestion}
+          onClick={handledeleteQuestion}
         >
           Delete Question
         </Button>

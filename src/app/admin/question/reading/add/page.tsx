@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { addReadingQuestion } from "@/lib/redux/slice/readingQuestionSlice";
+import { addQuestion } from "@/lib/redux/slice/questionSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { QuestionSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const AddReadingQuestion = () => {
+const addReadingQuestion = () => {
   const { isLoading } = useSelector(
     (state: RootState) => state.readingQuestion
   );
@@ -35,6 +35,7 @@ const AddReadingQuestion = () => {
       type: "reading",
       question: "",
       answer: "",
+      weight: "0",
       options: [
         {
           options: "",
@@ -53,10 +54,9 @@ const AddReadingQuestion = () => {
     resolver: zodResolver(QuestionSchema),
   });
 
-  async function handleAddReadingQuestion(data : z.infer<typeof QuestionSchema>) {
-    const res = await dispatch(addReadingQuestion(data));
-    console.log(res)
-    if (addReadingQuestion.fulfilled.match(res)) {
+  async function handleaddQuestion(data : z.infer<typeof QuestionSchema>) {
+    const res = await dispatch(addQuestion(data));
+    if (addQuestion.fulfilled.match(res)) {
       toast.success("Successfully add reading question");
       router.push("/admin/question/reading");
     } else {
@@ -84,7 +84,7 @@ const AddReadingQuestion = () => {
       <hr className="w-full" />
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((e) => handleAddReadingQuestion(e))}
+          onSubmit={form.handleSubmit((e) => handleaddQuestion(e))}
           className="space-y-4"
         >
           <FormField
@@ -142,7 +142,7 @@ const AddReadingQuestion = () => {
               <FormItem>
                 <FormLabel>Weight</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="10" type="number" />
+                  <Input {...field} placeholder="10" type={"number"}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -177,4 +177,4 @@ const AddReadingQuestion = () => {
   );
 };
 
-export default AddReadingQuestion;
+export default addReadingQuestion;

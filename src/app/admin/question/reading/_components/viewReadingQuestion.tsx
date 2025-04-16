@@ -14,18 +14,10 @@ const ViewReadingQuestion = ({
       <div>
         <p className="text-justify">{selectedQuestion?.question || ""}</p>
         <div className="grid grid-cols-2 gap-y-2 mt-6">
-          {selectedQuestion?.options.map((item) => (
-            <div key={item.uuid} className="flex gap-x-2">
-              <input
-                type="radio"
-                name="option"
-                id={item.uuid}
-                value={item.options}
-                disabled
-              />
-              <label htmlFor={item.uuid} className="text-sm">
-                {item.options}
-              </label>
+          {selectedQuestion?.options.map((item, index) => (
+            <div key={index} className="flex gap-x-2">
+              <input type="radio" name="option" value={item.options} disabled />
+              <label className="text-sm">{item.options}</label>
             </div>
           ))}
         </div>

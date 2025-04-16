@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  editReadingQuestion,
-  getReadingQuestionById,
-} from "@/lib/redux/slice/readingQuestionSlice";
+  editQuestion,
+  getQuestionById,
+} from "@/lib/redux/slice/questionSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { QuestionSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,11 +36,11 @@ const EditReadingQuestion = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  async function handleGetReadingQuestionById() {
-    const res = await dispatch(getReadingQuestionById(slug as string));
+  async function handlegetQuestionById() {
+    const res = await dispatch(getQuestionById(slug as string));
   }
   useEffect(() => {
-    handleGetReadingQuestionById();
+    handlegetQuestionById();
   }, [slug]);
 
   const ExtendedQuestionSchema = QuestionSchema.extend({
@@ -53,6 +53,7 @@ const EditReadingQuestion = () => {
       type: "reading",
       question: "",
       answer: "",
+      weight: "0", 
       options: [
         {
           options: "",
@@ -75,12 +76,12 @@ const EditReadingQuestion = () => {
     ), // Use the extended schema for validation
   });
 
-  async function handleEditReadingQuestion(
+  async function handleeditQuestion(
     data: z.infer<typeof ExtendedQuestionSchema>
   ) {
-    const res = await dispatch(editReadingQuestion(data));
+    const res = await dispatch(editQuestion(data));
     console.log(res);
-    if (editReadingQuestion.fulfilled.match(res)) {
+    if (editQuestion.fulfilled.match(res)) {
       toast.success("Successfully edit reading question");
       router.push("/admin/question/reading");
     } else {
@@ -148,7 +149,7 @@ const EditReadingQuestion = () => {
       ) : (
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit((e) => handleEditReadingQuestion(e))}
+            onSubmit={form.handleSubmit((e) => handleeditQuestion(e))}
             className="space-y-4"
           >
             <FormField

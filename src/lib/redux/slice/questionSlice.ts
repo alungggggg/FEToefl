@@ -3,11 +3,11 @@ import { QuestionInterface } from "@/lib/interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
-export const getReadingQuestion = createAsyncThunk(
-  "readingQuestion/getReadingQuestion",
-  async (_, { rejectWithValue }) => {
+export const getQuestion = createAsyncThunk(
+  "Question/getQuestion",
+  async (type : string, { rejectWithValue }) => {
     try {
-      const response = await toeflApi.get("/quests?type=reading");
+      const response = await toeflApi.get("/quests?type="+type);
       if (response.status === 200) {
         return response.data.data;
       }
@@ -22,8 +22,8 @@ export const getReadingQuestion = createAsyncThunk(
   }
 );
 
-export const getReadingQuestionById = createAsyncThunk(
-  "readingQuestion/getReadingQuestionById",
+export const getQuestionById = createAsyncThunk(
+  "Question/getQuestionById",
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await toeflApi.get(`/quests?id=${id}`);
@@ -41,8 +41,8 @@ export const getReadingQuestionById = createAsyncThunk(
   }
 );
 
-export const deleteReadingQuestion = createAsyncThunk(
-  "readingQuestion/deleteReadingQuestion",
+export const deleteQuestion = createAsyncThunk(
+  "Question/deleteQuestion",
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await toeflApi.delete(`/quests?id=${id}`);
@@ -60,8 +60,8 @@ export const deleteReadingQuestion = createAsyncThunk(
   }
 );
 
-export const addReadingQuestion = createAsyncThunk(
-  "readingQuestion/addReadingQuestion",
+export const addQuestion = createAsyncThunk(
+  "Question/addQuestion",
   async (data: QuestionInterface, { rejectWithValue }) => {
     try {
       const response = await toeflApi.post("/quests", data);
@@ -79,8 +79,8 @@ export const addReadingQuestion = createAsyncThunk(
   }
 );
 
-export const editReadingQuestion = createAsyncThunk(
-  "readingQuestion/editReadingQuestion",
+export const editQuestion = createAsyncThunk(
+  "Question/editQuestion",
   async (data: QuestionInterface, { rejectWithValue }) => {
     try {
       const response = await toeflApi.post(`/quests?id=${data.uuid}&_method=PATCH`, data);
@@ -110,75 +110,75 @@ const initialState: InitialState = {
   error: null,
 };
 
-const readingQuestionSlice = createSlice({
-  name: "readingQuestion",
+const questionSlice = createSlice({
+  name: "Question",
   initialState: initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(getReadingQuestion.pending, (state) => {
+    builder.addCase(getQuestion.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(getReadingQuestion.fulfilled, (state, action) => {
+    builder.addCase(getQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
     });
-    builder.addCase(getReadingQuestion.rejected, (state, action) => {
+    builder.addCase(getQuestion.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
-    builder.addCase(getReadingQuestionById.pending, (state) => {
+    builder.addCase(getQuestionById.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(getReadingQuestionById.fulfilled, (state, action) => {
+    builder.addCase(getQuestionById.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = [action.payload];
     });
-    builder.addCase(getReadingQuestionById.rejected, (state, action) => {
+    builder.addCase(getQuestionById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
-    builder.addCase(addReadingQuestion.pending, (state) => {
+    builder.addCase(addQuestion.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(addReadingQuestion.fulfilled, (state, action) => {
+    builder.addCase(addQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       // state.data = [...state.data, action.payload];
     });
-    builder.addCase(addReadingQuestion.rejected, (state, action) => {
+    builder.addCase(addQuestion.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
-    builder.addCase(deleteReadingQuestion.pending, (state) => {
+    builder.addCase(deleteQuestion.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(deleteReadingQuestion.fulfilled, (state, action) => {
+    builder.addCase(deleteQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = state.data.filter((item) => item.uuid !== action.payload);
     });
 
-    builder.addCase(deleteReadingQuestion.rejected, (state, action) => {
+    builder.addCase(deleteQuestion.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
-    builder.addCase(editReadingQuestion.pending, (state) => {
+    builder.addCase(editQuestion.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(editReadingQuestion.fulfilled, (state, action) => {
+    builder.addCase(editQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       // state.data = state.data.map((item) =>
       //   item.uuid === action.payload.uuid ? action.payload : item
       // );
     });
-    builder.addCase(editReadingQuestion.rejected, (state, action) => {
+    builder.addCase(editQuestion.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
   },
 });
 
-export default readingQuestionSlice.reducer;
+export default questionSlice.reducer;
