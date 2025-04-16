@@ -19,15 +19,15 @@ export type AuthInterface = {
 };
 
 export type QuestionOption = {
-  uuid: string;
-  id_question: string;
   options: string;
 };
 
 export type QuestionInterface = {
-  uuid: string;
+  uuid?: string;
   type: string;
   answer: string;
   question: string;
+  weight: string;
   options: QuestionOption[];
 };
+

@@ -53,6 +53,12 @@ export const QuestionSchema = z.object({
   answer: z.string().nonempty({
     message: "Answer is required",
   }),
+  weight: z.string().min(0, {
+    message: "Weight must be at least 0",
+  }),
+  // options: z.array(z.string()).nonempty({
+  //   message: "Options is required",
+  // }),
   options: z.array(
     z.object({
       options: z.string().nonempty({

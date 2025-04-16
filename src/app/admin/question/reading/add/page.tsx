@@ -11,14 +11,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { addReadingQuestion } from "@/lib/redux/slice/readingQuestionSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { QuestionSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 const AddReadingQuestion = () => {
+  const { isLoading } = useSelector(
+    (state: RootState) => state.readingQuestion
+  );
+  const dispatch  = useDispatch<AppDispatch>()
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof QuestionSchema>>({
     defaultValues: {
       type: "reading",
@@ -42,6 +53,17 @@ const AddReadingQuestion = () => {
     resolver: zodResolver(QuestionSchema),
   });
 
+  async function handleAddReadingQuestion(data : z.infer<typeof QuestionSchema>) {
+    const res = await dispatch(addReadingQuestion(data));
+    console.log(res)
+    if (addReadingQuestion.fulfilled.match(res)) {
+      toast.success("Successfully add reading question");
+      router.push("/admin/question/reading");
+    } else {
+      toast.error("Something went wrong");
+    }
+  }
+
   return (
     <div className="space-y-3">
       <div className="flex justify-between items-center">
@@ -54,14 +76,15 @@ const AddReadingQuestion = () => {
           onClick={() => {
             document.getElementById("submitReadingQuestion")?.click();
           }}
+          disabled={isLoading}
         >
-         <PlusIcon/> Add Question
+          <PlusIcon /> Add Question
         </Button>
       </div>
       <hr className="w-full" />
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((e) => console.log(e))}
+          onSubmit={form.handleSubmit((e) => handleAddReadingQuestion(e))}
           className="space-y-4"
         >
           <FormField
@@ -107,6 +130,19 @@ const AddReadingQuestion = () => {
                 <FormLabel>Answer</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Lorem ipsum" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="weight"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Weight</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="10" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

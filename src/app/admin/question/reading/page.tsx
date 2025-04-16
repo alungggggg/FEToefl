@@ -34,7 +34,6 @@ const ReadingPage = () => {
   }
 
   // filter data
-  console.log("questionData", questionData);
   const filteredData = questionData.filter((item) => {
     return item.question.toLowerCase().includes(searchParam.toLowerCase());
   });

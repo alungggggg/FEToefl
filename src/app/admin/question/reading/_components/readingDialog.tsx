@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,8 +22,6 @@ const ReadingDialog = ({
   dialogAction: string;
   selectedQuestion: QuestionInterface | undefined;
 }) => {
-  console.log(selectedQuestion);
-
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
       <DialogContent>
@@ -30,6 +29,11 @@ const ReadingDialog = ({
           <DialogTitle>
             {dialogAction === "view" ? "View Question" : "Edit Question"}
           </DialogTitle>
+          <DialogDescription>
+            {dialogAction === "view"
+              ? "View the question details"
+              : "Edit the question details"}
+          </DialogDescription>
         </DialogHeader>
         {dialogAction === "view" ? (
           <ViewReadingQuestion
@@ -37,7 +41,10 @@ const ReadingDialog = ({
             setIsOpen={setIsOpen}
           />
         ) : dialogAction === "delete" ? (
-          <DeleteReadingQuestion  setIsOpen={setIsOpen} selectedQuestion={selectedQuestion}/>
+          <DeleteReadingQuestion
+            setIsOpen={setIsOpen}
+            selectedQuestion={selectedQuestion}
+          />
         ) : (
           ""
         )}

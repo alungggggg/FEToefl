@@ -41,6 +41,63 @@ export const getReadingQuestionById = createAsyncThunk(
   }
 );
 
+export const deleteReadingQuestion = createAsyncThunk(
+  "readingQuestion/deleteReadingQuestion",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.delete(`/quests?id=${id}`);
+      if (response.status === 200) {
+        return id;
+      }
+
+      throw new Error("Failed to delete reading question");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const addReadingQuestion = createAsyncThunk(
+  "readingQuestion/addReadingQuestion",
+  async (data: QuestionInterface, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.post("/quests", data);
+      if (response.status === 200) {
+        return response.data.data;
+      }
+
+      throw new Error("Failed to add reading question");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const editReadingQuestion = createAsyncThunk(
+  "readingQuestion/editReadingQuestion",
+  async (data: QuestionInterface, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.post(`/quests?id=${data.uuid}&_method=PATCH`, data);
+      if (response.status === 200) {
+        return response.data;
+      }
+
+      throw new Error("Failed to add reading question");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
 type InitialState = {
   data: QuestionInterface[];
   isLoading: boolean;
@@ -79,6 +136,45 @@ const readingQuestionSlice = createSlice({
       state.data = [action.payload];
     });
     builder.addCase(getReadingQuestionById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(addReadingQuestion.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(addReadingQuestion.fulfilled, (state, action) => {
+      state.isLoading = false;
+      // state.data = [...state.data, action.payload];
+    });
+    builder.addCase(addReadingQuestion.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(deleteReadingQuestion.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(deleteReadingQuestion.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = state.data.filter((item) => item.uuid !== action.payload);
+    });
+
+    builder.addCase(deleteReadingQuestion.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(editReadingQuestion.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(editReadingQuestion.fulfilled, (state, action) => {
+      state.isLoading = false;
+      // state.data = state.data.map((item) =>
+      //   item.uuid === action.payload.uuid ? action.payload : item
+      // );
+    });
+    builder.addCase(editReadingQuestion.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     });
