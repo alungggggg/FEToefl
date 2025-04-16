@@ -15,7 +15,7 @@ const DeleteReadingQuestion = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useSelector(
-    (state: RootState) => state.readingQuestion
+    (state: RootState) => state.question
   );
 
   async function handledeleteQuestion() {

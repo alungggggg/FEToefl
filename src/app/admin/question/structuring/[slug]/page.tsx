@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const EditReadingQuestion = () => {
+const EditStructuringQuestion = () => {
   const { slug } = useParams();
   const { data: questionData, isLoading } = useSelector(
     (state: RootState) => state.question
@@ -50,7 +50,7 @@ const EditReadingQuestion = () => {
   const form = useForm<z.infer<typeof ExtendedQuestionSchema>>({
     defaultValues: {
       uuid: "",
-      type: "reading",
+      type: "structure",
       question: "",
       answer: "",
       weight: "0", 
@@ -83,7 +83,7 @@ const EditReadingQuestion = () => {
     console.log(res);
     if (editQuestion.fulfilled.match(res)) {
       toast.success("Successfully edit reading question");
-      router.push("/admin/question/reading");
+      router.push("/admin/question/structuring");
     } else {
       toast.error("Something went wrong");
     }
@@ -120,7 +120,7 @@ const EditReadingQuestion = () => {
       <div className="flex justify-between items-center">
         <Link className="flex gap-3" href={"./"}>
           <ArrowLeft />
-          Edit Reading Question
+          Edit Structuring Question
         </Link>
         <Button
           className="bg-blue-500 hover:bg-blue-600 text-white"
@@ -256,5 +256,5 @@ const EditReadingQuestion = () => {
     </div>
   );
 };
-
-export default EditReadingQuestion;
+ 
+export default EditStructuringQuestion;

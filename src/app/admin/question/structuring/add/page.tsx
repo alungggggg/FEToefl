@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const addReadingQuestion = () => {
+const AddStructuringQuestion = () => {
   const { isLoading } = useSelector(
     (state: RootState) => state.question
   );
@@ -32,7 +32,7 @@ const addReadingQuestion = () => {
 
   const form = useForm<z.infer<typeof QuestionSchema>>({
     defaultValues: {
-      type: "reading",
+      type: "structure",
       question: "",
       answer: "",
       weight: "0",
@@ -58,7 +58,7 @@ const addReadingQuestion = () => {
     const res = await dispatch(addQuestion(data));
     if (addQuestion.fulfilled.match(res)) {
       toast.success("Successfully add reading question");
-      router.push("/admin/question/reading");
+      router.push("/admin/question/structuring");
     } else {
       toast.error("Something went wrong");
     }
@@ -69,12 +69,12 @@ const addReadingQuestion = () => {
       <div className="flex justify-between items-center">
         <Link className="flex gap-3" href={"./"}>
           <ArrowLeft />
-          Add Reading Question
+          Add Structuring Question
         </Link>
         <Button
           className="bg-blue-500 hover:bg-blue-600 text-white"
           onClick={() => {
-            document.getElementById("submitReadingQuestion")?.click();
+            document.getElementById("submitStructuringQuestion")?.click();
           }}
           disabled={isLoading}
         >
@@ -169,12 +169,12 @@ const addReadingQuestion = () => {
           <button
             type="submit"
             className="d-none"
-            id="submitReadingQuestion"
+            id="submitStructuringQuestion"
           ></button>
         </form>
       </Form>
     </div>
   );
 };
-
-export default addReadingQuestion;
+ 
+export default AddStructuringQuestion;

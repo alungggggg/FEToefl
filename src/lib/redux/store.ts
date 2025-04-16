@@ -9,7 +9,7 @@ const store = configureStore({
     auth: authSlice,
     users: usersSlice,
     unautorizeDialog: unautorizeDialogSlice,
-    readingQuestion : readingQuestionSlice,
+    question : readingQuestionSlice,
   },
 });
 

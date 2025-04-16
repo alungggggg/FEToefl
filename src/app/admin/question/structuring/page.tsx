@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { QuestionInterface } from "@/lib/interface";
+import { getQuestion } from "@/lib/redux/slice/questionSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { ArrowLeft, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ReadingTable from "./_components/readingTable";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/redux/store";
-import { getQuestion } from "@/lib/redux/slice/questionSlice";
-import { Skeleton } from "@/components/ui/skeleton";
-import { QuestionInterface } from "@/lib/interface";
-import ReadingDialog from "./_components/readingDialog";
+import StructuringTable from "./_components/structuringTable";
 import { useRouter } from "next/navigation";
+import StructuringDialog from "./_components/structuringDialog";
 
-const ReadingPage = () => {
-  // search state
+const StructuringQuestion = () => {
+    // search state
   const [searchParam, setSearchParam] = useState("");
   // search state
 
@@ -27,7 +27,7 @@ const ReadingPage = () => {
   // redux action
 
   async function handleGetReadingQuestion() {
-    const res = await dispatch(getQuestion("reading"));
+    const res = await dispatch(getQuestion("structure"));
     if (!getQuestion.fulfilled.match(res)) {
       console.log("success", res.payload);
     }
@@ -55,7 +55,7 @@ const ReadingPage = () => {
     <section className="space-y-3">
       <Link className="flex gap-3" href={"./"}>
         <ArrowLeft />
-        Reading
+        Structuring
       </Link>
       <hr className="w-full" />
       {isLoading ? (
@@ -80,13 +80,13 @@ const ReadingPage = () => {
               onChange={(e) => setSearchParam(e.target.value)}
             />
             <Button className="bg-[#1E56A0]" onClick={() => {
-              router.push("./reading/add");
+              router.push("./structuring/add");
             }}>
               <PlusIcon />
               Add Question
             </Button>
           </div>
-          <ReadingTable
+          <StructuringTable
             questionData={filteredData}
             setIsOpen={setIsOpen}
             setDialogAction={setDialogAction}
@@ -94,7 +94,7 @@ const ReadingPage = () => {
           />
         </>
       )}
-      <ReadingDialog
+      <StructuringDialog
         isOpen={isOpen}
         dialogAction={dialogAction}
         setIsOpen={setIsOpen}
@@ -102,6 +102,6 @@ const ReadingPage = () => {
       />
     </section>
   );
-};
-
-export default ReadingPage;
+}
+ 
+export default StructuringQuestion;

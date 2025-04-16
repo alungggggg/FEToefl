@@ -18,7 +18,7 @@ const questionType = [
   },
   {
     name: "Structure",
-    link: "./",
+    link: "question/structuring",
     icon: NotebookPen,
     count: 200,
   },
