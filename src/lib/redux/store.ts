@@ -3,6 +3,7 @@ import authSlice from "./slice/authSlice";
 import usersSlice from "./slice/usersSlice";
 import unautorizeDialogSlice from "./slice/unautorizeDialogSlice";
 import readingQuestionSlice from "./slice/questionSlice";
+import examsSlice from "./slice/examsSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     users: usersSlice,
     unautorizeDialog: unautorizeDialogSlice,
     question : readingQuestionSlice,
+    exams : examsSlice,
   },
 });
 

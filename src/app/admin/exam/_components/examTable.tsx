@@ -6,20 +6,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SquarePen, Trash } from "lucide-react";
+import { ExamsInterface } from "@/lib/interface";
+import { EyeIcon, SquarePen, Trash } from "lucide-react";
+import Link from "next/link";
 
-const tHeadItems = [
-  "id",
-  "name",
-  "bunder",
-  "access",
-  "duration",
-  "status",
-  "expired",
-  "action",
-];
+const tHeadItems = ["No", "name", "Code", "access", "expired", "action"];
 
-const ExamTable = () => {
+const ExamTable = ({ examsData }: { examsData: ExamsInterface[] }) => {
   return (
     <Table>
       <TableHeader>
@@ -37,19 +30,22 @@ const ExamTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>1</TableCell>
-          <TableCell>Ujian 1</TableCell>
-          <TableCell>Matematika</TableCell>
-          <TableCell>Public</TableCell>
-          <TableCell>60</TableCell>
-          <TableCell>Active</TableCell>
-          <TableCell>2022-12-31</TableCell>
-          <TableCell className="flex z-10">
-            <SquarePen />
-            <Trash />
-          </TableCell>
-        </TableRow>
+        {examsData?.map((item, index) => (
+          <TableRow key={item.uuid}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.code}</TableCell>
+            <TableCell>{item.access}</TableCell>
+            <TableCell>{item.expired}</TableCell>
+            <TableCell className="text-center flex justify-center items-center gap-1">
+              <EyeIcon />
+              <Link href={`/admin/exam/${item.uuid}`}>
+                <SquarePen />
+              </Link>
+              <Trash />
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

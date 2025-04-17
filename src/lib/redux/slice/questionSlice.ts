@@ -5,9 +5,11 @@ import { AxiosError } from "axios";
 
 export const getQuestion = createAsyncThunk(
   "Question/getQuestion",
-  async (type : string, { rejectWithValue }) => {
+  async (type: string | undefined, { rejectWithValue }) => {
     try {
-      const response = await toeflApi.get("/quests?type="+type);
+      const response = await toeflApi.get(
+        `/quests${type ? `?type=${type}` : ""}`
+      );
       if (response.status === 200) {
         return response.data.data;
       }
@@ -83,7 +85,10 @@ export const editQuestion = createAsyncThunk(
   "Question/editQuestion",
   async (data: QuestionInterface, { rejectWithValue }) => {
     try {
-      const response = await toeflApi.post(`/quests?id=${data.uuid}&_method=PATCH`, data);
+      const response = await toeflApi.post(
+        `/quests?id=${data.uuid}&_method=PATCH`,
+        data
+      );
       if (response.status === 200) {
         return response.data;
       }

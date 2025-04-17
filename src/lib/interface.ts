@@ -31,3 +31,11 @@ export type QuestionInterface = {
   options: QuestionOption[];
 };
 
+export type ExamsInterface = {
+  uuid: string;
+  name: string;
+  code: string;
+  access: string;
+  expired: string;
+  quest: [];
+};

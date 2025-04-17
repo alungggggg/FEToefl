@@ -28,16 +28,16 @@ export const usersScema = z.object({
     .nonempty({
       message: "Password is required",
     }),
-    // .max(16, {
-    //   message: "Password must be at most 16 characters long",
-    // })
-    // .regex(
-    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
-    //   {
-    //     message:
-    //       "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
-    //   }
-    // ),
+  // .max(16, {
+  //   message: "Password must be at most 16 characters long",
+  // })
+  // .regex(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+  //   {
+  //     message:
+  //       "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+  //   }
+  // ),
   exam: z.string().nonempty({
     message: "Exam is required",
   }),
@@ -59,14 +59,27 @@ export const QuestionSchema = z.object({
   // options: z.array(z.string()).nonempty({
   //   message: "Options is required",
   // }),
-  options: z.array(
-    z.object({
-      options: z.string().nonempty({
-        message: "Options is required",
-      }),
-    })
-  ).nonempty({
-    message: "Options is required",
-  }),
+  options: z
+    .array(
+      z.object({
+        options: z.string().nonempty({
+          message: "Options is required",
+        }),
+      })
+    )
+    .nonempty({
+      message: "Options is required",
+    }),
 });
 
+export const ExamSchema = z.object({
+  name: z.string().nonempty({
+    message: "Name is required",
+  }),
+  access: z.string().nonempty({
+    message: "Access is required",
+  }),
+  expired: z.string().nonempty({
+    message: "Expired is required",
+  }),
+});
