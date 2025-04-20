@@ -12,7 +12,17 @@ import Link from "next/link";
 
 const tHeadItems = ["No", "name", "Code", "access", "expired", "action"];
 
-const ExamTable = ({ examsData }: { examsData: ExamsInterface[] }) => {
+const ExamTable = ({
+  examsData,
+  setOpen,
+  setAction,
+  setExamDialogData,
+}: {
+  examsData: ExamsInterface[];
+  setOpen: (open: boolean) => void;
+  setAction: (action: string) => void;
+  setExamDialogData: (data: ExamsInterface) => void;
+}) => {
   return (
     <Table>
       <TableHeader>
@@ -38,11 +48,23 @@ const ExamTable = ({ examsData }: { examsData: ExamsInterface[] }) => {
             <TableCell>{item.access}</TableCell>
             <TableCell>{item.expired}</TableCell>
             <TableCell className="text-center flex justify-center items-center gap-1">
-              <EyeIcon />
+              <EyeIcon
+                onClick={() => {
+                  setOpen(true);
+                  setAction("show");
+                  setExamDialogData(item);
+                }}
+              />
               <Link href={`/admin/exam/${item.uuid}`}>
                 <SquarePen />
               </Link>
-              <Trash />
+              <Trash
+                onClick={() => {
+                  setOpen(true);
+                  setAction("delete");
+                  setExamDialogData(item);
+                }}
+              />
             </TableCell>
           </TableRow>
         ))}

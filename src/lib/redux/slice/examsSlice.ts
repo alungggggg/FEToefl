@@ -75,17 +75,39 @@ export const editExams = createAsyncThunk(
       name: string;
       access: string;
       expired: string;
-      bundler: Array<{ id_exam: string; id_quest: string }> | null;
+      bundler: Array<{ id_quest: string }> | null;
     },
     { rejectWithValue }
   ) => {
     try {
-      const response = await toeflApi.post(`/exams?uuid=${data.uuid}&_method=PATCH`, data);
+      const response = await toeflApi.post(
+        `/exams?uuid=${data.uuid}&_method=PATCH`,
+        data
+      );
       if (response.status === 200) {
         return response.data.data;
       }
 
       throw new Error("Failed to edit exams");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
+export const deleteExams = createAsyncThunk(
+  "exams/deleteExams",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.delete(`/exams?uuid=${id}`);
+      if (response.status === 200) {
+        return response.data.data;
+      }
+
+      throw new Error("Failed to delete exams");
     } catch (error) {
       if (error instanceof AxiosError) {
         throw rejectWithValue(error.response?.data);
@@ -146,6 +168,35 @@ const examsSlice = createSlice({
         state.data = [action.payload];
       })
       .addCase(getExamsById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(editExams.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(editExams.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // const index = state.data.findIndex(
+        //   (exam) => exam.uuid === action.payload.uuid
+        // );
+        // if (index !== -1) {
+        //   state.data[index] = action.payload;
+        // }
+      })
+      .addCase(editExams.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteExams.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteExams.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = state.data.filter((exam) => exam.uuid !== action.payload);
+      })
+      .addCase(deleteExams.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

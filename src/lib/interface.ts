@@ -37,5 +37,5 @@ export type ExamsInterface = {
   code: string;
   access: string;
   expired: string;
-  quest: [];
+  quest: QuestionInterface[];
 };

@@ -15,10 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { QuestionInterface } from "@/lib/interface";
 import { getQuestion } from "@/lib/redux/slice/questionSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -32,10 +33,7 @@ const SelectedQuestionDialog = ({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   setSelectedQuestion: (question: any) => void;
-  selectedQuestion: Array<{
-    id_exam: string;
-    id_quest: string;
-  }>;
+  selectedQuestion: QuestionInterface[];
   exams_id: string;
 }) => {
   const { data, isLoading } = useSelector((state: RootState) => state.question);
@@ -73,27 +71,35 @@ const SelectedQuestionDialog = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((item , i) => (
+            {data.map((item, i) => (
               <TableRow key={i}>
                 <TableCell className="truncate">{item.question}</TableCell>
                 <TableCell>
-                  <Button
-                    className="bg-[#1E56A0]"
-                    size={"sm"}
-                    onClick={() => {
-                      setSelectedQuestion((prev: any) => [
-                        ...prev,
-                        {
-                          id_exam: exams_id,
-                          id_quest: item.uuid,
-                          question: item.question,
-                        },
-                      ]);
-                      setIsOpen(false);
-                    }}
-                  >
-                    <PlusIcon />
-                  </Button>
+                  {selectedQuestion.find((quest) => quest.uuid == item.uuid) ? (
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() =>
+                        setSelectedQuestion(
+                          selectedQuestion.filter(
+                            (quest) => quest.uuid != item.uuid
+                          )
+                        )
+                      }
+                    >
+                      <XIcon />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant={"outline"}
+                      size="icon"
+                      onClick={() =>
+                        setSelectedQuestion([...selectedQuestion, item])
+                      }
+                    >
+                      <PlusIcon />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
