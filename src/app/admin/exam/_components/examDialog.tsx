@@ -11,7 +11,9 @@ import { Input } from "@/components/ui/input";
 import { ExamsInterface } from "@/lib/interface";
 import { deleteExams, getExams } from "@/lib/redux/slice/examsSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { Copy } from "lucide-react";
+import { Copy, Link2Icon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -28,6 +30,7 @@ const ExamDialog = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useSelector((state: RootState) => state.exams);
+  const route = useRouter()
 
   async function handleDeleteExam() {
     const res = await dispatch(deleteExams(examsDataDialog?.uuid as string));
@@ -90,7 +93,7 @@ const ExamDialog = ({
                 <label htmlFor="code">Expired</label>
                 <Input type="text" value={examsDataDialog?.expired} readOnly />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 col-span-2">
                 <label htmlFor="code">Question count</label>
                 <Input
                   type="text"
@@ -103,13 +106,18 @@ const ExamDialog = ({
             ""
           )}
         </div>
-        <DialogFooter>
+        <DialogFooter className="mt-6">
           <Button
             variant={"destructive"}
             onClick={handleDeleteExam}
             disabled={isLoading}
+            className={action == "show" ? "hidden" : ""}
           >
             Delete
+          </Button>
+          <Button className={action != "show" ? "hidden" : ""} onClick={()=>route.push(`exam/${examsDataDialog?.uuid}/score`)}>
+            <Link2Icon />
+            View Attendance Report
           </Button>
           <Button
             variant={"outline"}

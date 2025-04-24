@@ -5,7 +5,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../../../components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -17,8 +17,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "../ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+} from "../../../../components/ui/sidebar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../components/ui/avatar";
 import {
   BadgeCheck,
   ChevronsUpDown,
@@ -32,8 +36,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import { signOut } from "@/lib/redux/slice/authSlice";
+import { UsersProfileInterface } from "@/lib/redux/slice/userProfileSlice";
 
-const SideBarAdmin = () => {
+const SideBarAdmin = ({
+  userProfile,
+}: {
+  userProfile: UsersProfileInterface;
+}) => {
   const path = usePathname();
   const currentRoute = path?.split("/")[2] || "dashboard";
 
@@ -92,13 +101,13 @@ const SideBarAdmin = () => {
         <SidebarGroup />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <NavUser userProfile={userProfile} />
       </SidebarFooter>
     </Sidebar>
   );
 };
 
-function NavUser() {
+function NavUser({ userProfile }: { userProfile: UsersProfileInterface }) {
   const { isMobile } = useSidebar();
 
   // redux variable
@@ -111,6 +120,11 @@ function NavUser() {
     // Add your logout logic here
     const res = await dispatch(signOut());
     if (res.type === "auth/signOut/fulfilled") {
+      router.push("/login");
+    } else {
+      await fetch("/api/auth", {
+        method: "DELETE",
+      });
       router.push("/login");
     }
   }
@@ -131,10 +145,12 @@ function NavUser() {
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{"Yosan"}</span>
-                <span className="truncate text-xs">
-                  {"Yosanokta12@gmail.com"}
+                <span className="truncate font-semibold">
+                  {userProfile.name.split(" ")[0] +
+                    " " +
+                    userProfile.name.split(" ")[1]}
                 </span>
+                <span className="truncate text-xs">{userProfile.username}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -155,9 +171,13 @@ function NavUser() {
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{"Yosan"}</span>
+                  <span className="truncate font-semibold">
+                    {userProfile.name.split(" ")[0] +
+                      " " +
+                      userProfile.name.split(" ")[1]}
+                  </span>
                   <span className="truncate text-xs">
-                    {"Yosanokta12@gmail.com"}
+                    {userProfile.username}
                   </span>
                 </div>
               </div>

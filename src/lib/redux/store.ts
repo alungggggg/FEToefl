@@ -4,14 +4,18 @@ import usersSlice from "./slice/usersSlice";
 import unautorizeDialogSlice from "./slice/unautorizeDialogSlice";
 import readingQuestionSlice from "./slice/questionSlice";
 import examsSlice from "./slice/examsSlice";
+import usersProfileSlice from "./slice/userProfileSlice";
+import scoreSlice from "./slice/scoreSlice"
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     users: usersSlice,
     unautorizeDialog: unautorizeDialogSlice,
-    question : readingQuestionSlice,
-    exams : examsSlice,
+    question: readingQuestionSlice,
+    exams: examsSlice,
+    userProfile: usersProfileSlice,
+    score : scoreSlice
   },
 });
 

@@ -1,6 +1,6 @@
 'use client'
 
-import NoDataMessage from "@/components/page/noDataMessage";
+import NoDataMessage from "@/app/admin/_components/page/noDataMessage";
 import {
   Table,
   TableBody,

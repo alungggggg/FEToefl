@@ -1,6 +1,6 @@
 "use client";
 
-import Pagination from "@/components/page/pagination";
+import Pagination from "@/app/admin/_components/page/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ExamTable from "@/app/admin/exam/_components/examTable";
