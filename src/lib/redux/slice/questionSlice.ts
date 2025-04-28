@@ -81,6 +81,29 @@ export const addQuestion = createAsyncThunk(
   }
 );
 
+export const addFileQuestion = createAsyncThunk(
+  "Question/addFileQuestion",
+  async (data: QuestionInterface, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.post("/quests", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        return response.data.data;
+      }
+
+      throw new Error("Failed to add reading question");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
 export const editQuestion = createAsyncThunk(
   "Question/editQuestion",
   async (data: QuestionInterface, { rejectWithValue }) => {
@@ -148,7 +171,7 @@ const questionSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(addQuestion.fulfilled, (state, action) => {
+    builder.addCase(addQuestion.fulfilled, (state) => {
       state.isLoading = false;
       // state.data = [...state.data, action.payload];
     });
@@ -173,16 +196,29 @@ const questionSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(editQuestion.fulfilled, (state, action) => {
+    builder.addCase(editQuestion.fulfilled, (state) => {
       state.isLoading = false;
       // state.data = state.data.map((item) =>
       //   item.uuid === action.payload.uuid ? action.payload : item
       // );
     });
-    builder.addCase(editQuestion.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload as string;
-    });
+    builder
+      .addCase(editQuestion.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(addFileQuestion.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addFileQuestion.fulfilled, (state) => {
+        state.isLoading = false;
+        // state.data = [...state.data, action.payload];
+      })
+      .addCase(addFileQuestion.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

@@ -175,7 +175,7 @@ const examsSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(editExams.fulfilled, (state, action) => {
+      .addCase(editExams.fulfilled, (state) => {
         state.isLoading = false;
         // const index = state.data.findIndex(
         //   (exam) => exam.uuid === action.payload.uuid

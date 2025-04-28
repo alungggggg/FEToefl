@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-const addReadingQuestion = () => {
+const AddReadingQuestion = () => {
   const { isLoading } = useSelector(
     (state: RootState) => state.question
   );
@@ -177,4 +177,4 @@ const addReadingQuestion = () => {
   );
 };
 
-export default addReadingQuestion;
+export default AddReadingQuestion;

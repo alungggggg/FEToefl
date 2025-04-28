@@ -47,7 +47,7 @@ const ReadingTable = ({
         {questionData.map((item, index) => (
           <TableRow key={item.uuid}>
             <TableCell>{index + 1}</TableCell>
-            <TableCell className="truncate max-w-xs">{item.question}</TableCell>
+            <TableCell className="truncate max-w-xs">{item.question as string}</TableCell>
             <TableCell>{item.type}</TableCell>
             <TableCell>{item.answer}</TableCell>
             <TableCell className="flex z-10 gap-x-1">

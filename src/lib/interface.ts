@@ -26,7 +26,7 @@ export type QuestionInterface = {
   uuid?: string;
   type: string;
   answer: string;
-  question: string;
+  question: string | File;
   weight: string;
   options: QuestionOption[];
 };

@@ -24,7 +24,6 @@ import {
   CalendarIcon,
   PlusIcon,
   SaveIcon,
-  UsersRoundIcon,
   XIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -45,7 +44,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { editExams, getExamsById } from "@/lib/redux/slice/examsSlice";
-import { ExamsInterface, QuestionInterface } from "@/lib/interface";
+import { QuestionInterface } from "@/lib/interface";
 import { Skeleton } from "@/components/ui/skeleton";
 import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { toast } from "react-toastify";
@@ -288,7 +287,7 @@ const EditExams = () => {
                   {selectedBundler?.map((item, i) => (
                     <TableRow key={i}>
                       <TableCell className="truncate">
-                        {item?.question || "Question not found"}
+                        {item?.question as string || "Question not found"}
                       </TableCell>
                       <TableCell className="truncate">
                         {item?.weight || "0"}
@@ -298,8 +297,8 @@ const EditExams = () => {
                           className="bg-red-600"
                           size={"sm"}
                           onClick={() =>
-                            setSelectedBundler((prev: any) =>
-                              prev.filter((q: any) => q.uuid !== item.uuid)
+                            setSelectedBundler((prev: QuestionInterface[]) =>
+                              prev.filter((q: QuestionInterface) => q.uuid !== item.uuid)
                             )
                           }
                         >

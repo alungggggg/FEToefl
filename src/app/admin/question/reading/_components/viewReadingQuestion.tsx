@@ -12,7 +12,7 @@ const ViewReadingQuestion = ({
   return (
     <>
       <div>
-        <p className="text-justify">{selectedQuestion?.question || ""}</p>
+        <p className="text-justify">{selectedQuestion?.question as string || ""}</p>
         <div className="grid grid-cols-2 gap-y-2 mt-6">
           {selectedQuestion?.options.map((item, index) => (
             <div key={index} className="flex gap-x-2">

@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getScore } from "@/lib/redux/slice/scoreSlice";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { ArrowLeft, PrinterIcon } from "lucide-react";
 import Link from "next/link";
@@ -29,6 +30,9 @@ const ExamScore = () => {
   async function handleGetScore() {
     if (typeof slug === "string") {
       const res = await dispatch(getScore({ id_exam: slug }));
+      if(!getScore.fulfilled.match(res)) {
+        dispatch(showDialog())
+      }
     } else {
       console.error("Invalid slug type");
     }

@@ -45,10 +45,10 @@ const AddUser = ({
       const res = await dispatch(addUsers(values));
       if (res?.payload?.error?.toLowerCase() == "unauthorized") {
         dispatch(showDialog());
-      } else if (res?.payload?.errors?.username[0]) {
-        toast.error(res?.payload?.errors?.username[0]);
-      } else {
+      } else if (addUsers.fulfilled.match(res)) {
         toast.success("Successfully add users");
+      } else {
+        toast.error("Failed to add users");
       }
       setIsOpen(false);
     } catch (error) {

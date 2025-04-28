@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,10 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  editQuestion,
-  getQuestionById,
-} from "@/lib/redux/slice/questionSlice";
+import { editQuestion, getQuestionById } from "@/lib/redux/slice/questionSlice";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { QuestionSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +36,10 @@ const EditStructuringQuestion = () => {
 
   async function handlegetQuestionById() {
     const res = await dispatch(getQuestionById(slug as string));
+    if (!getQuestionById.fulfilled.match(res)) {
+      toast.error("Something went wrong");
+      dispatch(showDialog());
+    }
   }
   useEffect(() => {
     handlegetQuestionById();
@@ -53,7 +55,7 @@ const EditStructuringQuestion = () => {
       type: "structure",
       question: "",
       answer: "",
-      weight: "0", 
+      weight: "0",
       options: [
         {
           options: "",
@@ -69,11 +71,7 @@ const EditStructuringQuestion = () => {
         },
       ],
     },
-    resolver: zodResolver(
-      QuestionSchema.extend({
-        uuid: z.string().nonempty(),
-      })
-    ), // Use the extended schema for validation
+    resolver: zodResolver(ExtendedQuestionSchema), // Use the extended schema for validation
   });
 
   async function handleeditQuestion(
@@ -94,7 +92,10 @@ const EditStructuringQuestion = () => {
       form.reset({
         uuid: questionData[0]?.uuid,
         type: questionData[0]?.type,
-        question: questionData[0]?.question,
+        question:
+          typeof questionData[0]?.question === "string"
+            ? questionData[0]?.question
+            : undefined,
         answer: questionData[0]?.answer,
         weight: questionData[0]?.weight.toString() || "",
         options: [
@@ -256,5 +257,5 @@ const EditStructuringQuestion = () => {
     </div>
   );
 };
- 
+
 export default EditStructuringQuestion;

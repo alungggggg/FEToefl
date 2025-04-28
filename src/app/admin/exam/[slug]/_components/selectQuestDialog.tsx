@@ -28,15 +28,14 @@ const SelectedQuestionDialog = ({
   setIsOpen,
   setSelectedQuestion,
   selectedQuestion,
-  exams_id,
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  setSelectedQuestion: (question: any) => void;
+  setSelectedQuestion: (question: QuestionInterface[]) => void;
   selectedQuestion: QuestionInterface[];
   exams_id: string;
 }) => {
-  const { data, isLoading } = useSelector((state: RootState) => state.question);
+  const { data } = useSelector((state: RootState) => state.question);
   const dispatch = useDispatch<AppDispatch>();
 
   async function handleGetReadingQuestion() {
@@ -73,7 +72,7 @@ const SelectedQuestionDialog = ({
           <TableBody>
             {data.map((item, i) => (
               <TableRow key={i}>
-                <TableCell className="truncate">{item.question}</TableCell>
+                <TableCell className="truncate">{item.question as string}</TableCell>
                 <TableCell>
                   {selectedQuestion.find((quest) => quest.uuid == item.uuid) ? (
                     <Button

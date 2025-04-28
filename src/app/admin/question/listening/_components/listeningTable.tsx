@@ -9,25 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SquarePen, Trash, Play, Pause, Volume2 } from "lucide-react";
+import { SquarePen, Trash, Play, Pause, Volume2, EyeIcon } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
+import { QuestionInterface } from "@/lib/interface";
 
-const tHeadItems = ["No", "Question", "Answer", "Audio", "Action"];
-
-const data = [
-  {
-    id: 1,
-    question: "Apa nama hewan berkaki 4?",
-    answer: "Gajah",
-    audioUrl: "/sample-6s.mp3",
-  },
-  {
-    id: 2,
-    question: "Hewan yang memiliki ekor panjang?",
-    answer: "Monyet",
-    audioUrl: "/sample-6s.mp3",
-  },
-];
+const tHeadItems = ["No", "Question", "Answer", "Audio", "Weight", "Action"];
 
 const formatTime = (seconds: number) => {
   const min = Math.floor(seconds / 60);
@@ -35,7 +21,17 @@ const formatTime = (seconds: number) => {
   return `${min}:${sec < 10 ? "0" : ""}${sec}`;
 };
 
-const ListeningTable = () => {
+const ListeningTable = ({
+  questionData,
+  setIsOpen,
+  setDialogAction,
+  setSelectedQuestion,
+}: {
+  setIsOpen: (isOpen: boolean) => void;
+  setDialogAction: (dialogAction: string) => void;
+  setSelectedQuestion: (selectedQuestion: QuestionInterface) => void;
+  questionData: QuestionInterface[];
+}) => {
   const [activeAudioId, setActiveAudioId] = useState<number | null>(null);
   const [progress, setProgress] = useState<{ [key: number]: number }>({});
   const [durations, setDurations] = useState<{ [key: number]: number }>({});
@@ -106,58 +102,72 @@ const ListeningTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((row, index) => (
-          <TableRow key={row.id}>
+        {questionData.map((row, index) => (
+          <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
-            <TableCell>{row.question}</TableCell>
+            <TableCell>{"Listen carefully to answer the question !"}</TableCell>
             <TableCell>{row.answer}</TableCell>
             <TableCell>
               <div className="flex items-center gap-2 w-full p-2 bg-gray-100 rounded-lg">
                 <audio
                   ref={(el) => {
-                    if (el) audioRefs.current[row.id] = el;
+                    if (el) audioRefs.current[index] = el;
                   }}
-                  src={row.audioUrl}
+                  src={`${process.env.NEXT_PUBLIC_AUDIO_URL}${row.question}`}
                   onTimeUpdate={(e) => {
                     const audio = e.currentTarget;
                     setProgress((prev) => ({
                       ...prev,
-                      [row.id]: audio?.currentTime || 0, // ✅ Gunakan optional chaining
+                      [index]: audio?.currentTime || 0, // ✅ Gunakan optional chaining
                     }));
                   }}
                   onLoadedMetadata={(e) => {
                     const audio = e.currentTarget;
                     setDurations((prev) => ({
                       ...prev,
-                      [row.id]: audio?.duration || 0, // ✅ Gunakan optional chaining
+                      [index]: audio?.duration || 0, // ✅ Gunakan optional chaining
                     }));
                   }}
                 />
-                <button onClick={() => togglePlay(row.id)} className="p-2">
-                  {activeAudioId === row.id &&
-                  audioRefs.current[row.id]?.paused === false ? (
+                <button onClick={() => togglePlay(index)} className="p-2">
+                  {activeAudioId === index &&
+                  audioRefs.current[index]?.paused === false ? (
                     <Pause size={20} />
                   ) : (
                     <Play size={20} />
                   )}
                 </button>
                 <span className="text-sm">
-                  {formatTime(progress[row.id] || 0)} /{" "}
-                  {formatTime(durations[row.id] || 0)}
+                  {formatTime(progress[index] || 0)} /{" "}
+                  {formatTime(durations[index] || 0)}
                 </span>
                 <Slider
-                  value={[progress[row.id] || 0]}
-                  max={durations[row.id] || 1}
-                  onValueChange={(value) => handleSeek(row.id, value)}
+                  value={[progress[index] || 0]}
+                  max={durations[index] || 1}
+                  onValueChange={(value) => handleSeek(index, value)}
                   className="w-20"
                 />
                 <Volume2 size={18} />
               </div>
             </TableCell>
+            <TableCell>{row.weight}</TableCell>
             <TableCell>
               <div className="flex z-10 h-full items-center justify-center gap-1">
+                <EyeIcon
+                  onClick={() => {
+                    setIsOpen(true);
+                    setDialogAction("view");
+                    setSelectedQuestion(row);
+                  }}
+                />
                 <SquarePen />
-                <Trash />
+                <Trash
+                  onClick={() => {
+                    setIsOpen(true);
+                    setDialogAction("delete");
+                    setSelectedQuestion(row);
+                  }}
+                />
               </div>
             </TableCell>
           </TableRow>

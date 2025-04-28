@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpenText, List, NotebookPen, Speaker, Volume2 } from "lucide-react";
+import { BookOpenText, List, NotebookPen, Volume2 } from "lucide-react";
 import Link from "next/link";
 
 const questionType = [

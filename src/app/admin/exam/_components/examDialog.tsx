@@ -12,7 +12,6 @@ import { ExamsInterface } from "@/lib/interface";
 import { deleteExams, getExams } from "@/lib/redux/slice/examsSlice";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { Copy, Link2Icon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";

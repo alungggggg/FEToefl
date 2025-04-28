@@ -22,7 +22,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, CalendarIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useDispatch, useSelector } from "react-redux";

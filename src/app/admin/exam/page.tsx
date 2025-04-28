@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import ExamDialog from "./_components/examDialog";
 import { ExamsInterface } from "@/lib/interface";
+import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 
 const ExamPage = () => {
   const { data: examsData, isLoading } = useSelector(
@@ -24,6 +25,9 @@ const ExamPage = () => {
 
   async function handleGetExamsData() {
     const res = await dispatch(getExams());
+    if(!getExams.fulfilled.match(res)) {
+      dispatch(showDialog())
+    }
   }
 
   useEffect(() => {
