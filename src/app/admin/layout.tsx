@@ -9,7 +9,10 @@ import { getCookie } from "@/lib/fetchingCookie";
 import UnautorizeDialog from "./_components/unautorizeDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { hideDialog, showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
+import {
+  hideDialog,
+  showDialog,
+} from "@/lib/redux/slice/unautorizeDialogSlice";
 import { getUserProfile } from "@/lib/redux/slice/userProfileSlice";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -17,12 +20,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isChecking, setIsChecking] = useState<boolean>(true); // ✅ Tambahkan state untuk validasi login
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const {data : userProfile , isLoading} = useSelector((state : RootState)=>state.userProfile)
-  
+  const { data: userProfile, isLoading } = useSelector(
+    (state: RootState) => state.userProfile
+  );
+
   async function fetchUserProfile() {
     const res = await dispatch(getUserProfile()); // Dispatch the thunk action
-    if(!getUserProfile.fulfilled.match(res)){
-      dispatch(showDialog())
+    if (!getUserProfile.fulfilled.match(res)) {
+      dispatch(showDialog());
+    } else if (res.payload.role !== "ADMIN") {
+      if (res.payload.role == "PESERTA") {
+        router.push("/quiz");
+      } else {
+        return <div>Not Found !!</div>;
+      }
     }
   }
 
@@ -41,7 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       setIsChecking(false); // ✅ Tandai bahwa validasi selesai
     }
 
-    fetchUserProfile()
+    fetchUserProfile();
     checkToken();
   }, [router]);
 
@@ -67,7 +78,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <section>
       <NextTopLoader showSpinner={false} />
       <SidebarProvider>
-        <SideBarAdmin userProfile={userProfile}/>
+        <SideBarAdmin userProfile={userProfile} />
         <section className="w-full">
           <div className="h-[64px] flex items-center border-b border-[#1E56A0]">
             <SidebarTrigger />
