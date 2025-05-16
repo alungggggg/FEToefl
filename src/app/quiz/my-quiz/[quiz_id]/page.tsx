@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { SplitedExamsInterface } from "../page";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { hideSidebar } from "@/lib/redux/slice/sidebarHandler";
+import CameraLive from "./begin/@camera/page";
 
 const Page = () => {
   const { quiz_id } = useParams();
@@ -35,6 +37,10 @@ const Page = () => {
   };
 
   useEffect(() => {
+    async function handleHideSidebar() {
+      dispatch(hideSidebar());
+    }
+    handleHideSidebar();
     handleGetExams();
   }, [type]);
   // get exams data
@@ -53,84 +59,98 @@ const Page = () => {
         </section>
       ) : (
         <section className="grid grid-cols-12 gap-4">
-          <div className="col-span-8 bg-white/70 backdrop-blur-sm p-4 rounded-lg shadow-md">
-            {type == "reading" ? (
-              <div className="space-y-3">
-                <p className="">
-                  Selamat datang di bagian Reading pada ujian TOEFL. Bagian ini
-                  bertujuan untuk mengukur kemampuan Anda dalam memahami teks
-                  bacaan akademik berbahasa Inggris.
-                </p>
-                <p>Agar ujian berjalan lancar, perhatikan tata cara berikut:</p>
-                <ol className="list-decimal list-outside pl-4">
-                  <li className="list-item">Bacalah teks dengan seksama</li>
-                  <li className="list-item">
-                    Kerjakan soal sesuai teks bacaan
-                  </li>
-                  <li className="list-item">
-                    Perhatikan sisa waktu pengerjaan
-                  </li>
-                </ol>
-                <p>Semangat Mengerjakan</p>
+          <div className="col-span-8 bg-white/70 backdrop-blur-sm p-4 rounded-lg shadow-md grid grid-cols-4 gap-4">
+            <div className="col-span-1 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-md">
+              <div className="flex flex-col justify-start items-center gap-4">
+                <h1 className="text-xl font-semibold">Camera Preview</h1>
+                <CameraLive />
               </div>
-            ) : type == "structure" ? (
-              <div className="space-y-3">
-                <p>
-                  Selamat datang di bagian Structure and Written Expression pada
-                  ujian TOEFL. Bagian ini bertujuan untuk mengukur kemampuan
-                  Anda dalam memahami tata bahasa (grammar) dan struktur kalimat
-                  dalam bahasa Inggris.
-                </p>
-                <p>Agar ujian berjalan lancar, perhatikan tata cara berikut:</p>
-                <ol className="list-decimal list-outside pl-4">
-                  <li className="list-item">
-                    Bacalah setiap soal dengan cermat, perhatikan struktur
-                    kalimatnya.
-                  </li>
-                  <li className="list-item">
-                    Pilih jawaban yang secara tata bahasa paling tepat dan
-                    sesuai konteks kalimat.
-                  </li>
-                  <li className="list-item">
-                    Perhatikan pola soal: melengkapi kalimat (Structure) atau
-                    menemukan kesalahan (Written Expression).
-                  </li>
-                  <li className="list-item">
-                    Atur waktu pengerjaan agar dapat menjawab semua soal dengan
-                    tenang.
-                  </li>
-                </ol>
-                <p>Semangat Mengerjakan</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <p>
-                  Selamat datang di bagian Listening pada ujian TOEFL. Bagian
-                  ini bertujuan untuk mengukur kemampuan Anda dalam memahami
-                  percakapan dan ceramah dalam bahasa Inggris akademik.
-                </p>
-                <p>Agar ujian berjalan lancar, perhatikan tata cara berikut:</p>
-                <ol className="list-decimal list-outside pl-4">
-                  <li className="list-item">
-                    Dengarkan setiap percakapan atau ceramah dengan fokus dan
-                    tanpa gangguan.
-                  </li>
-                  <li className="list-item">
-                    Perhatikan ide utama, informasi detail, serta sikap dan
-                    maksud pembicara.
-                  </li>
-                  <li className="list-item">
-                    Jawablah soal segera setelah audio selesai diputar,
-                    berdasarkan informasi yang didengar.
-                  </li>
-                  <li className="list-item">
-                    Perhatikan sisa waktu pengerjaan untuk memastikan semua soal
-                    terjawab.
-                  </li>
-                </ol>
-                <p>Semangat Mengerjakan</p>
-              </div>
-            )}
+            </div>
+            <div className="col-span-3">
+              {type == "reading" ? (
+                <div className="space-y-3">
+                  <p className="">
+                    Selamat datang di bagian Reading pada ujian TOEFL. Bagian
+                    ini bertujuan untuk mengukur kemampuan Anda dalam memahami
+                    teks bacaan akademik berbahasa Inggris.
+                  </p>
+                  <p>
+                    Agar ujian berjalan lancar, perhatikan tata cara berikut:
+                  </p>
+                  <ol className="list-decimal list-outside pl-4">
+                    <li className="list-item">Bacalah teks dengan seksama</li>
+                    <li className="list-item">
+                      Kerjakan soal sesuai teks bacaan
+                    </li>
+                    <li className="list-item">
+                      Perhatikan sisa waktu pengerjaan
+                    </li>
+                  </ol>
+                  <p>Semangat Mengerjakan</p>
+                </div>
+              ) : type == "structure" ? (
+                <div className="space-y-3">
+                  <p>
+                    Selamat datang di bagian Structure and Written Expression
+                    pada ujian TOEFL. Bagian ini bertujuan untuk mengukur
+                    kemampuan Anda dalam memahami tata bahasa (grammar) dan
+                    struktur kalimat dalam bahasa Inggris.
+                  </p>
+                  <p>
+                    Agar ujian berjalan lancar, perhatikan tata cara berikut:
+                  </p>
+                  <ol className="list-decimal list-outside pl-4">
+                    <li className="list-item">
+                      Bacalah setiap soal dengan cermat, perhatikan struktur
+                      kalimatnya.
+                    </li>
+                    <li className="list-item">
+                      Pilih jawaban yang secara tata bahasa paling tepat dan
+                      sesuai konteks kalimat.
+                    </li>
+                    <li className="list-item">
+                      Perhatikan pola soal: melengkapi kalimat (Structure) atau
+                      menemukan kesalahan (Written Expression).
+                    </li>
+                    <li className="list-item">
+                      Atur waktu pengerjaan agar dapat menjawab semua soal
+                      dengan tenang.
+                    </li>
+                  </ol>
+                  <p>Semangat Mengerjakan</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p>
+                    Selamat datang di bagian Listening pada ujian TOEFL. Bagian
+                    ini bertujuan untuk mengukur kemampuan Anda dalam memahami
+                    percakapan dan ceramah dalam bahasa Inggris akademik.
+                  </p>
+                  <p>
+                    Agar ujian berjalan lancar, perhatikan tata cara berikut:
+                  </p>
+                  <ol className="list-decimal list-outside pl-4">
+                    <li className="list-item">
+                      Dengarkan setiap percakapan atau ceramah dengan fokus dan
+                      tanpa gangguan.
+                    </li>
+                    <li className="list-item">
+                      Perhatikan ide utama, informasi detail, serta sikap dan
+                      maksud pembicara.
+                    </li>
+                    <li className="list-item">
+                      Jawablah soal segera setelah audio selesai diputar,
+                      berdasarkan informasi yang didengar.
+                    </li>
+                    <li className="list-item">
+                      Perhatikan sisa waktu pengerjaan untuk memastikan semua
+                      soal terjawab.
+                    </li>
+                  </ol>
+                  <p>Semangat Mengerjakan</p>
+                </div>
+              )}
+            </div>
           </div>
           <div className="col-span-4 flex flex-col justify-between bg-white/70 backdrop-blur-sm p-4 rounded-lg shadow-md space-y-4">
             <div className="grid grid-cols-2 gap-1 text-sm">
@@ -162,6 +182,7 @@ const Page = () => {
                   Dilarang menggunakan bantuan dari luar selama ujian
                   berlangsung.
                 </li>
+                <li className="list-item">Pastikan kamera menyala</li>
                 <li className="list-item">
                   Setelah memulai, waktu akan berjalan otomatis hingga selesai.
                 </li>

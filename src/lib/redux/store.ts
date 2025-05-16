@@ -6,6 +6,7 @@ import readingQuestionSlice from "./slice/questionSlice";
 import examsSlice from "./slice/examsSlice";
 import usersProfileSlice from "./slice/userProfileSlice";
 import scoreSlice from "./slice/scoreSlice"
+import sidebarHandlerSlice from "./slice/sidebarHandler"
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
     question: readingQuestionSlice,
     exams: examsSlice,
     userProfile: usersProfileSlice,
-    score : scoreSlice
+    score : scoreSlice,
+    sidebarHandler : sidebarHandlerSlice
   },
 });
 
