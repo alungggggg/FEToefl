@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { getUserProfile } from "@/lib/redux/slice/userProfileSlice";
-import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
+import { hideDialog, showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
+import UnautorizeDialog from "../admin/_components/unautorizeDialog";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { isLoading } = useSelector((state: RootState) => state.userProfile);
@@ -19,6 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   async function fetchUserProfile() {
+    dispatch(hideDialog())
     const res = await dispatch(getUserProfile()); // Dispatch the thunk action
     if (!getUserProfile.fulfilled.match(res)) {
       dispatch(showDialog());
@@ -70,6 +72,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <footer className="w-full bg-white/50 backdrop-blur-sm border-t border-[#1E56A0] flex items-center justify-center py-5">
         <p className="text-sm text-gray-500">© 2023 Quiz App</p>
       </footer>
+      <UnautorizeDialog/>
     </section>
   );
 };

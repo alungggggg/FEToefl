@@ -117,6 +117,25 @@ export const deleteExams = createAsyncThunk(
   }
 );
 
+export const getExamsByUserId = createAsyncThunk(
+  "getExamsByUserId",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await toeflApi.get(`/exams`);
+      if (response.status === 200) {
+        return response.data.data;
+      }
+
+      throw new Error("Failed to get exams data");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw rejectWithValue(error.response?.data);
+      }
+      throw rejectWithValue("An unexpected error occurred");
+    }
+  }
+);
+
 type InitialState = {
   data: ExamsInterface[];
   isLoading: boolean;
@@ -199,6 +218,21 @@ const examsSlice = createSlice({
       .addCase(deleteExams.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+      })
+      .addCase(getExamsByUserId.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.error = "";
+      })
+      .addCase(getExamsByUserId.pending, (state) => {
+        state.isLoading = true;
+        state.error = "";
+        state.data = [];
+      })
+      .addCase(getExamsByUserId.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error as string;
+        state.data = [];
       });
   },
 });

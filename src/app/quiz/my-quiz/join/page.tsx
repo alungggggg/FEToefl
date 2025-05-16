@@ -1,16 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormField,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toeflApi } from "@/lib/axios/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 const schema = z.object({
@@ -25,6 +24,31 @@ const Page = () => {
     resolver: zodResolver(schema),
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function joinQuiz({ code }: { code: string }) {
+    try {
+      setIsLoading(true);
+      const res = await toeflApi.post("exams/join", {
+        code: code,
+      });
+
+      if (res.status !== 200) {
+        toast.error(res.data.response.data.message);
+      } else {
+        toast.success("successfully joined exam");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const router = useRouter();
   return (
     <section className="flex items-center justify-center h-[calc(80vh)] gap-4">
@@ -33,7 +57,7 @@ const Page = () => {
           action=""
           className="flex flex-col gap-4 w-full max-w-sm bg-white/50 backdrop-blur-sm p-4 rounded-lg shadow-md"
           onSubmit={form.handleSubmit((data) => {
-            console.log(data);
+            joinQuiz(data);
           })}
         >
           <div>
@@ -64,10 +88,16 @@ const Page = () => {
               onClick={() => {
                 router.back();
               }}
+              disabled={isLoading}
             >
               <ArrowLeft />
             </Button>
-            <Button type="submit" className="bg-blue-600 col-span-4">
+
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="bg-blue-600 col-span-4"
+            >
               Join
             </Button>
           </div>
