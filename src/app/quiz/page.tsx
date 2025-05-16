@@ -1,13 +1,30 @@
 'use client'
 
-import { RootState } from "@/lib/redux/store";
+import { showSideBar } from "@/lib/redux/slice/sidebarHandler";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 import { SquarePenIcon } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Page = () => {
   const { data: usersProfile } = useSelector(
     (state: RootState) => state.userProfile
   );
+  const dispatch = useDispatch<AppDispatch>()
+
+   // to show back a sidebar
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
+
+  useEffect(() => {
+    async function handleShowSidebar() {
+      dispatch(showSideBar());
+    }
+
+    handleShowSidebar();
+  }, [type]);
+  // to show back a sidebar
   return (
     <section>
       {/* for profile */}

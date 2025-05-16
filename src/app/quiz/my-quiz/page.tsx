@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { showDialog } from "@/lib/redux/slice/unautorizeDialogSlice";
 import { ExamsInterface, QuestionInterface } from "@/lib/interface";
 import { toeflApi } from "@/lib/axios/axios";
+import { AxiosError } from "axios";
 
 export type SplitedExamsInterface = Omit<ExamsInterface, "quest"> & {
   listening: QuestionInterface[];
@@ -50,11 +51,13 @@ const Page = () => {
       } else {
         toast.success("successfully Exit exam");
       }
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Unexpected error occurred");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Unexpected error occurred");
+        }
       }
     } finally {
       setExitLoading(false);
@@ -74,17 +77,13 @@ const Page = () => {
           {/* <p className="text-sm text-gray-500">List of your quiz</p> */}
         </div>
         <Button
-          className={`bg-blue-600 ${
-            splitedExamData?.uuid ? " hidden" : ""
-          }`}
+          className={`bg-blue-600 ${splitedExamData?.uuid ? " hidden" : ""}`}
           onClick={() => router.push("/quiz/my-quiz/join")}
         >
           <Plus /> Join Quiz
         </Button>
         <Button
-          className={`bg-red-600 ${
-            splitedExamData?.uuid ? "" : "hidden"
-          }`}
+          className={`bg-red-600 ${splitedExamData?.uuid ? "" : "hidden"}`}
           onClick={() => handleExitExams(splitedExamData?.uuid || "")}
           disabled={exitLoading}
         >

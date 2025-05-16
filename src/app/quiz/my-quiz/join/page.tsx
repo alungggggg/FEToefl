@@ -5,6 +5,7 @@ import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toeflApi } from "@/lib/axios/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,11 +39,13 @@ const Page = () => {
       } else {
         toast.success("successfully joined exam");
       }
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Unexpected error occurred");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Unexpected error occurred");
+        }
       }
     } finally {
       setIsLoading(false);
